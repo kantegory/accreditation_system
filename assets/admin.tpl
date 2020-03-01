@@ -31,10 +31,10 @@
         <article class="container-fluid bg-light" id="sections">
             <section id="create" class="p-3">
                 <h2>Создать анкету</h2>
-                <form action="" class="w-50 m-auto">
+                <form action="/admin/new_blank" method="POST" class="w-50 m-auto" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="">Название:</label>
-                        <input type="text" class="form-control" placeholder="Название...">
+                        <input type="text" class="form-control" placeholder="Название..." name="blank_name">
                     </div>
                     <div class="form-group">
                         Стандарты:
@@ -45,7 +45,7 @@
                                 </small>
                             </p>
                             <div class="custom-file mt-2" id="fileInput1">
-                                <input type="file" class="custom-file-input" required>
+                                <input type="file" class="custom-file-input" name="fileInput1" required>
                                 <label class="custom-file-label">Выберите XML-файл...</label>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
             fileAmounts++;
             document.querySelector('#fileInputs').innerHTML += `
 				<div class="custom-file mt-2" id="fileInput` + fileAmounts + `">
-                    <input type="file" class="custom-file-input" required>
+                    <input type="file" class="custom-file-input" required name="fileInput` + fileAmounts + `">
                     <label class="custom-file-label">Выберите XML-файл...</label>
                 </div>
         	`;
