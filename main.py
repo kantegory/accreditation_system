@@ -1,7 +1,7 @@
 import bottle
 from bottle import request, response, route, template, static_file, auth_basic, FormsDict
+from utils.db_helper import create_blank
 import json
-import os
 
 
 def check(user, password):
@@ -16,9 +16,14 @@ def get_admin_page():
 
 @route('/admin/new_blank', method="POST")
 def create_new_blank():
-    params = request.forms.get('blank_name')
-    standard = request.files.get('fileInput1')
-    standard.save('./standards/')  #
+
+    data = {
+        'forms': request.forms,
+        'files': request.files
+    }
+
+    create_blank(data)
+
     response.status = 200
     return response
 

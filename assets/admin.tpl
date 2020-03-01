@@ -55,11 +55,11 @@
                     </div>
                     <div class="form-group">
                         <label for="">Дата начала:</label>
-                        <input type="date" class="form-control">
+                        <input type="date" class="form-control" name="start_date">
                     </div>
                     <div class="form-group">
                         <label for="">Дата конца:</label>
-                        <input type="date" class="form-control">
+                        <input type="date" class="form-control" name="end_date">
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить на модерацию</button>
                 </form>

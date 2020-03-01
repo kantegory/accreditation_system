@@ -49,14 +49,10 @@ def get_particular_work_function(page):
     return result
 
 
-def main():
-    file = open('test.xml', 'r')
+def parse_xml(filename):
+    file = open(filename, 'r')
     xml = file.read()
     page = BeautifulSoup(xml, 'lxml')
     generalized_work_functions = get_generalized_work_functions(page)
-    print(len(generalized_work_functions))
-    print(generalized_work_functions)
 
-
-if __name__ == "__main__":
-    main()
+    return generalized_work_functions
