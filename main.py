@@ -1,6 +1,7 @@
 import bottle
 from bottle import request, response, route, template, static_file, auth_basic, FormsDict
 from utils.db_helper import create_blank
+from utils.db_manage import get_all_blanks
 import json
 
 
@@ -11,7 +12,7 @@ def check(user, password):
 @route('/admin')
 @auth_basic(check)
 def get_admin_page():
-    return template('assets/admin.tpl')
+    return template('assets/admin.tpl', blanks=get_all_blanks(), moderatingBlanks=get_all_blanks('moderating'))
 
 
 @route('/admin/new_blank', method="POST")

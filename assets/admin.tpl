@@ -67,13 +67,27 @@
             <section id="moderate" class="p-3 d-none">
                 <h2>Анкеты на модерации</h2>
                 <div class="list-group w-50 m-auto">
-                    <a class="list-group-item list-group-item-action">Анкета 1</a>
+                    %for moderatingBlank in moderatingBlanks:
+                    <a href="admin/blank/{{ moderatingBlank['token'] }}" class="list-group-item list-group-item-action">{{ moderatingBlank['name'] }}</a>
+                    <div class="d-flex flex-row">
+                        <small class="text-muted">Дата начала: {{ moderatingBlank['startDate'] }}</small>
+                        <small class="text-muted ml-2">Дата окончания: {{ moderatingBlank['endDate'] }}</small>
+                        <small class="text-muted ml-2">Используемые профстандарты:</small>
+                    </div>
+                    %end
                 </div>
             </section>
             <section id="all" class="p-3 d-none">
                 <h2>Все анкеты</h2>
                 <div class="list-group w-50 m-auto">
-                    <a class="list-group-item list-group-item-action">Анкета 1</a>
+                    %for blank in blanks:
+                    <a href="admin/blank/{{ blank['token'] }}" class="list-group-item list-group-item-action">{{ blank['name'] }}</a>
+                    <div class="d-flex flex-row">
+                        <small class="text-muted">Дата начала: {{ blank['startDate'] }}</small>
+                        <small class="text-muted ml-2">Дата окончания: {{ blank['endDate'] }}</small>
+                        <small class="text-muted ml-2">Используемые профстандарты:</small>
+                    </div>
+                    %end
                 </div>
             </section>
             <section id="reports" class="p-3 d-none">

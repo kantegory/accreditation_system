@@ -62,6 +62,7 @@ class Blanks(Base):
     startDate = Column(String)
     endDate = Column(String)
     token = Column(String)
+    state = Column(String)
 
 
 class BlankStandards(Base):

@@ -18,16 +18,25 @@ def add_new_blank(data):
     }
 
     token = get_token(result)
+    state = 'moderating'
 
     s = session()
 
-    blank = Blanks(
-        name=data['blank_name'],
-        startDate=data['start_date'],
-        endDate=data['end_date'],
-        token=token
-    )
-    s.add(blank)
+    check = []
+    rows = s.query(Blanks).filter(Blanks.token == token)
+
+    for row in rows:
+        check.append(row.token)
+
+    if token not in check:
+        blank = Blanks(
+            name=data['blank_name'],
+            startDate=data['start_date'],
+            endDate=data['end_date'],
+            token=token,
+            state=state
+        )
+        s.add(blank)
     s.commit()
 
     gwf = data['standards']
@@ -70,6 +79,8 @@ def add_new_blank_standard(token, standard_registration_number):
 
     s.add(bs)
     s.commit()
+
+    get_all_questions_by_token(token)
 
 
 def add_new_pwf(data, rn):
@@ -212,3 +223,133 @@ def add_new_otf(data):
             )
             s.add(gwf)
     s.commit()
+
+
+def get_required_skills_by_registration_number(registration_number):
+    s = session()
+
+    rs = s.query(RequiredSkills).filter(RequiredSkills.registrationNumber == registration_number).all()
+
+    result = [
+        {
+            'codeTF': rs[i].codeTF,
+            'registrationNumber': rs[i].registrationNumber,
+            'question': rs[i].requiredSkill,
+            'questionType': 'requiredSkill'
+        }
+        for i in range(len(rs))
+    ]
+
+    return result
+
+
+def get_necessary_knowledges_by_registration_number(registration_number):
+    s = session()
+
+    nk = s.query(NecessaryKnowledges).filter(NecessaryKnowledges.registrationNumber == registration_number).all()
+
+    result = [
+        {
+            'codeTF': nk[i].codeTF,
+            'registrationNumber': nk[i].registrationNumber,
+            'question': nk[i].necessaryKnowledge,
+            'questionType': 'necessaryKnowledge'
+        }
+        for i in range(len(nk))
+    ]
+
+    return result
+
+
+def get_labor_actions_by_registration_number(registration_number):
+    s = session()
+
+    la = s.query(LaborActions).filter(LaborActions.registrationNumber == registration_number).all()
+
+    result = [
+        {
+            'codeTF': la[i].codeTF,
+            'registrationNumber': la[i].registrationNumber,
+            'question': la[i].laborAction,
+            'questionType': 'laborAction'
+        }
+        for i in range(len(la))
+    ]
+
+    return result
+
+
+def get_all_questions_by_blank_id(blank_id):
+    s = session()
+
+    standards = s.query(BlankStandards).filter(BlankStandards.blankId == blank_id).all()
+
+    rs = []
+    la = []
+    nk = []
+
+    for standard in standards:
+        rs_standard = get_required_skills_by_registration_number(standard.standardRegistrationNumber)
+        rs.append(rs_standard)
+
+        la_standard = get_labor_actions_by_registration_number(standard.standardRegistrationNumber)
+        la.append(la_standard)
+
+        nk_standard = get_necessary_knowledges_by_registration_number(standard.standardRegistrationNumber)
+        nk.append(nk_standard)
+
+    blank_questions = []
+
+    for question in rs[0]:
+        blank_questions.append(question)
+
+    for question in la[0]:
+        blank_questions.append(question)
+
+    for question in nk[0]:
+        blank_questions.append(question)
+
+    questions = [
+        {
+            'question': question['question'],
+            'questionType': question['questionType'],
+            'codeTF': question['codeTF'],
+            'standardRegistrationNumber': question['registrationNumber']
+        }
+        for question in blank_questions
+    ]
+
+    return questions
+
+
+def get_all_questions_by_token(token):
+    s = session()
+
+    blank = s.query(Blanks).filter(Blanks.token == token)
+    blank_id = blank[0].id
+
+    questions = get_all_questions_by_blank_id(blank_id)
+    print('questions', questions)
+    return questions
+
+
+def get_all_blanks(state="all"):
+    s = session()
+
+    blanks = s.query(Blanks).all()
+
+    if state == "moderating":
+        blanks = s.query(Blanks).filter(Blanks.state == "moderating").all()
+
+    all_blanks = [
+        {
+            'name': blank.name,
+            'startDate': blank.startDate,
+            'endDate': blank.endDate,
+            'token': blank.token,
+            'state': blank.state
+        }
+        for blank in blanks
+    ]
+
+    return all_blanks
