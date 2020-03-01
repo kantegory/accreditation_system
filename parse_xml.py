@@ -21,6 +21,7 @@ def get_generalized_work_functions(page):
             'codeOTF': get_text_by_tag(content[i], 'codeotf'),
             'nameOTF': get_text_by_tag(content[i], 'nameotf'),
             'levelOfQualification': get_text_by_tag(content[i], 'levelofqualification'),
+            'possibleJobTitle': get_text_by_tag(content[i], 'possiblejobtitle'),
             'particularWorkFunctions': get_particular_work_function(content[i])
         }
         for i in range(len(content))
@@ -52,8 +53,8 @@ def main():
     file = open('test.xml', 'r')
     xml = file.read()
     page = BeautifulSoup(xml, 'lxml')
-    particular_work_functions = get_particular_work_function(page)
     generalized_work_functions = get_generalized_work_functions(page)
+    print(len(generalized_work_functions))
     print(generalized_work_functions)
 
 
