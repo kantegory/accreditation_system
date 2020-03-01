@@ -22,4 +22,21 @@ class Admin(Base):
     password = Column(String)
 
 
+class GeneralizedWorkFunction(Base):
+    __tablename__ = "generalizedworkfunction"
+    id = Column(Integer, primary_key=True)
+    codeOTF = Column(String)
+    nameOTF = Column(String)
+    levelOfQualification = Column(Integer)
+    registrationNumber = Column(Integer)
+
+
+class RequiredSkills(Base):
+    __tablename__ = "requiredskills"
+    id = Column(Integer, primary_key=True)
+    codeTF = Column(String)
+    registrationNumber = Column(Integer)
+    requiredSkill = Column(Integer)
+
+
 Base.metadata.create_all(bind=engine)
