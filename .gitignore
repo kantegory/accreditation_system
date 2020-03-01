@@ -1,3 +1,5 @@
 .idea
 *.*~
 standards/*.*
+*.db-journal
+*.swp

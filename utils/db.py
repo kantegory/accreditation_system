@@ -39,4 +39,29 @@ class RequiredSkills(Base):
     requiredSkill = Column(Integer)
 
 
+class LaborActions(Base):
+    __tablename__ = "laboractions"
+    id = Column(Integer, primary_key=True)
+    codeTF = Column(String)
+    registrationNumber = Column(Integer)
+    laborAction = Column(Integer)
+
+
+class NecessaryKnowledges(Base):
+    __tablename__ = "necessaryknowledges"
+    id = Column(Integer, primary_key=True)
+    codeTF = Column(String)
+    registrationNumber = Column(Integer)
+    necessaryKnowledge = Column(Integer)
+
+
+class Blanks(Base):
+    __tablename__ = "blanks"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    startDate = Column(String)
+    endDate = Column(String)
+    token = Column(String)
+
+
 Base.metadata.create_all(bind=engine)
