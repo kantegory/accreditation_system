@@ -71,4 +71,14 @@ class BlankStandards(Base):
     standardRegistrationNumber = Column(Integer)
 
 
+class UserAnswers(Base):
+    __tablename__ = "useranswers"
+    id = Column(Integer, primary_key=True)
+    blankId = Column(Integer)
+    userId = Column(Integer)
+    question = Column(String)
+    questionType = Column(String)
+    answer = Column(String)
+
+
 Base.metadata.create_all(bind=engine)
