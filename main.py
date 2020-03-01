@@ -1,9 +1,14 @@
 import bottle
-from bottle import request, response, route, template, static_file
+from bottle import request, response, route, template, static_file, auth_basic
 import json
 
 
+def check(user, password):
+    return user == "" and password == ""
+
+
 @route('/admin')
+@auth_basic(check)
 def get_admin_page():
     return template('assets/admin.tpl')
 
