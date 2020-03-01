@@ -1,5 +1,6 @@
 import os
 from .parse_xml import parse_xml
+from .db_manage import add_new_blank
 
 
 def create_blank(data):
@@ -13,4 +14,4 @@ def create_blank(data):
         'standards': parse_xml(filename)
     }
 
-    print(result)
+    add_new_blank(result)
