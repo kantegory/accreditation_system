@@ -64,4 +64,11 @@ class Blanks(Base):
     token = Column(String)
 
 
+class BlankStandards(Base):
+    __tablename__ = "blankstandards"
+    id = Column(Integer, primary_key=True)
+    blankId = Column(Integer)
+    standardRegistrationNumber = Column(Integer)
+
+
 Base.metadata.create_all(bind=engine)

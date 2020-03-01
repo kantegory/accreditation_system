@@ -1,4 +1,4 @@
-from .db import GeneralizedWorkFunction, RequiredSkills, LaborActions, NecessaryKnowledges, Blanks, session
+from .db import GeneralizedWorkFunction, RequiredSkills, LaborActions, NecessaryKnowledges, Blanks, BlankStandards, session
 from hashlib import md5
 
 
@@ -31,10 +31,10 @@ def add_new_blank(data):
     s.commit()
 
     gwf = data['standards']
-    add_new_gwf(gwf)
+    add_new_gwf(gwf, token)
 
 
-def add_new_gwf(data):
+def add_new_gwf(data, token):
     print(data)
 
     otf = [
@@ -52,6 +52,24 @@ def add_new_gwf(data):
     pwf = [elem['particularWorkFunctions'] for elem in data][0]
     rn = data[0]['registrationNumber']
     add_new_pwf(pwf, rn)
+    add_new_blank_standard(token, rn)
+
+
+def add_new_blank_standard(token, standard_registration_number):
+    s = session()
+
+    blank_id = s.query(Blanks).filter(Blanks.token == token)
+
+    for row in blank_id:
+        blank_id = row.id
+
+    bs = BlankStandards(
+        blankId=blank_id,
+        standardRegistrationNumber=standard_registration_number
+    )
+
+    s.add(bs)
+    s.commit()
 
 
 def add_new_pwf(data, rn):
