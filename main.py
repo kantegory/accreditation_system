@@ -2,7 +2,8 @@ import bottle
 from bottle import request, response, route, template, static_file, auth_basic, FormsDict
 from utils.db_helper import create_blank
 from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
-    add_new_user, get_blank_id_by_token, add_new_users_answers
+    add_new_user, get_blank_id_by_token, add_new_users_answers, \
+    get_blank_info_by_token
 import json
 
 
@@ -30,10 +31,12 @@ def create_new_blank():
     return response
 
 
-@route('/admin/blank/')
+@route('/admin/blank/<token>')
 @auth_basic(check)
-def get_admin_blank_page():
-    return template('assets/blank.tpl')
+def get_admin_blank_page(token):
+    blank = get_blank_info_by_token(token)
+    questions = get_all_questions_by_token(token)
+    return template('assets/blank.tpl', questions=questions, blank=blank, token=token)
 
 
 @route('/admin/report/')
@@ -60,7 +63,6 @@ def write_new_user_answers(token):
     add_new_users_answers(answers, blank_id, user_id)
     print('answers', answers)
     print('type', type(answers))
-
 
 
 def main(_host="localhost"):

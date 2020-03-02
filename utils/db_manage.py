@@ -344,6 +344,23 @@ def get_blank_id_by_token(token):
     return blank_id
 
 
+def get_blank_info_by_token(token):
+    s = session()
+
+    blanks = s.query(Blanks).filter(Blanks.token == token).all()
+    blanks = blanks[0]
+
+    blank_info = {
+        'name': blanks.name,
+        'startDate': blanks.startDate,
+        'endDate': blanks.endDate,
+        'token': token,
+        'state': blanks.state
+    }
+
+    return blank_info
+
+
 def get_all_blanks(state="all"):
     s = session()
 
