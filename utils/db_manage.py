@@ -414,3 +414,32 @@ def add_new_users_answers(data, blank_id, user_id):
         s.add(user_answers)
 
     s.commit()
+
+
+def get_user_answers_by_blank_id(blank_id):
+
+    s = session()
+
+    user_answers = s.query(UserAnswers).filter(UserAnswers.blankId == blank_id)
+
+    user_answers = [
+        {
+            'blankId': user_answer.blankId,
+            'userId': user_answer.userId,
+            'question': user_answer.question,
+            'questionType': user_answer.questionType,
+            'answer': user_answer.answer,
+            'registrationNumber': user_answer.registrationNumber
+        }
+        for user_answer in user_answers
+    ]
+
+    return user_answers
+
+
+def get_report_by_token(token):
+
+    blank_id = get_blank_id_by_token(token)
+    user_answers = get_user_answers_by_blank_id(blank_id)
+
+    return user_answers

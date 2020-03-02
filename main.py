@@ -3,7 +3,7 @@ from bottle import request, response, route, template, static_file, auth_basic, 
 from utils.db_helper import create_blank
 from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     add_new_user, get_blank_id_by_token, add_new_users_answers, \
-    get_blank_info_by_token
+    get_blank_info_by_token, get_report_by_token
 import json
 
 
@@ -39,10 +39,12 @@ def get_admin_blank_page(token):
     return template('assets/blank.tpl', questions=questions, blank=blank, token=token)
 
 
-@route('/admin/report/')
+@route('/admin/report/<token>')
 @auth_basic(check)
-def get_admin_report_page():
-    return template('assets/report.tpl')
+def get_admin_report_page(token):
+    reports = get_report_by_token(token)
+    blank = get_blank_info_by_token(token)
+    return template('assets/report.tpl', reports=reports, blank=blank)
 
 
 @route('/quiz/<token>')
