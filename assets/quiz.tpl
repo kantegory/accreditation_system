@@ -21,56 +21,70 @@
         <section class="container-fluid">
             <h2>Анкета 1</h2>
             <form class="w-50 m-auto">
-                <fieldset class="w-100">
-                    <legend>Вопрос 1</legend>
+                %for i in range(len(questions)):
+                <fieldset class="w-100 mt-2" id="question{{ i }}" data-questionType="{{ questions[i]['questionType'] }}"
+                data-registrationNumber="{{ questions[i]['standardRegistrationNumber'] }}" data-answer=""
+                data-codeOTF="{{ questions[i]['codeTF'] }}" data-question="{{ questions[i]['question'] }}">
+                    <legend>Выберите наиболее подходящее утверждение для следующей компетенции:</legend>
+                    <p>{{ questions[i]['question'] }}</p>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio1" name="question1" class="custom-control-input" value="1" required>
-                        <label class="custom-control-label" for="customRadio1">Не было в программе образовательной организации</label>
+                        <input type="radio" id="questions1_{{ i }}" name="question{{ i }}" class="custom-control-input" value="1" required onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions1_{{ i }}">Не было в программе образовательной организации</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio2" name="question1" class="custom-control-input" value="2">
-                        <label class="custom-control-label" for="customRadio2">Частично освоил в образовательной организации, но не востребовано на рабочем месте</label>
+                        <input type="radio" id="questions2_{{ i }}" name="question{{ i }}" class="custom-control-input" value="2" onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions2_{{ i }}">Частично освоил в образовательной организации, но не востребовано на рабочем месте</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio3" name="question1" class="custom-control-input" value="3">
-                        <label class="custom-control-label" for="customRadio3">Освоил в образовательной организации, но не востребовано на рабочем месте</label>
+                        <input type="radio" id="questions3_{{ i }}" name="question{{ i }}" class="custom-control-input" value="3" onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions3_{{ i }}">Освоил в образовательной организации, но не востребовано на рабочем месте</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio4" name="question1" class="custom-control-input" value="4">
-                        <label class="custom-control-label" for="customRadio4">Частично освоил в образовательной организации и соответствует требованиям работодателя</label>
+                        <input type="radio" id="questions4_{{ i }}" name="question{{ i }}" class="custom-control-input" value="4" onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions4_{{ i }}">Частично освоил в образовательной организации и соответствует требованиям работодателя</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio5" name="question1" class="custom-control-input" value="5">
-                        <label class="custom-control-label" for="customRadio5">Освоил в образовательной организации и соответствует требованиям работодателя</label>
-                    </div>
-                </fieldset>
-                <fieldset class="w-100">
-                    <legend>Вопрос 2</legend>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio6" name="question2" class="custom-control-input" value="1" required>
-                        <label class="custom-control-label" for="customRadio6">Не было в программе образовательной организации</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio7" name="question2" class="custom-control-input" value="2">
-                        <label class="custom-control-label" for="customRadio7">Частично освоил в образовательной организации, но не востребовано на рабочем месте</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio8" name="question2" class="custom-control-input" value="3">
-                        <label class="custom-control-label" for="customRadio8">Освоил в образовательной организации, но не востребовано на рабочем месте</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio9" name="question2" class="custom-control-input" value="4">
-                        <label class="custom-control-label" for="customRadio9">Частично освоил в образовательной организации и соответствует требованиям работодателя</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio10" name="question2" class="custom-control-input" value="5">
-                        <label class="custom-control-label" for="customRadio10">Освоил в образовательной организации и соответствует требованиям работодателя</label>
+                        <input type="radio" id="questions5_{{ i }}" name="question{{ i }}" class="custom-control-input" value="5" onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions5_{{ i }}">Освоил в образовательной организации и соответствует требованиям работодателя</label>
                     </div>
                 </fieldset>
-                <button class="btn btn-primary mt-2">Продолжить</button>
+                %end
+                <button class="btn btn-primary mt-2" onclick="sendResults()">Отправить</button>
             </form>
         </section>
     </main>
+    <script type="text/javascript">
+    function sendResults() {
+        event.preventDefault();
+
+        let questionData = [];
+
+        %for i in range(len(questions)):
+        questionData.push(JSON.stringify(document.querySelector('#question{{ i }}').dataset));
+        %end
+
+        let url = '/quiz/{{ token }}/';
+
+        fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer',
+            body: JSON.stringify(questionData)
+        }).then((result) => { console.log(result) })
+    }
+
+    function writeAnswer(id) {
+        let fieldsetID = 'question' + id.split('_')[1];
+        console.log(fieldsetID)
+        document.querySelector('#' + fieldsetID).dataset.answer = document.querySelector('#' + id).value;
+    }
+    </script>
 </body>
 
 </html>

@@ -1,4 +1,5 @@
-from .db import GeneralizedWorkFunction, RequiredSkills, LaborActions, NecessaryKnowledges, Blanks, BlankStandards, session
+from .db import GeneralizedWorkFunction, RequiredSkills, LaborActions, NecessaryKnowledges, \
+    Blanks, BlankStandards, Users, UserAnswers, session
 from hashlib import md5
 
 
@@ -333,6 +334,16 @@ def get_all_questions_by_token(token):
     return questions
 
 
+def get_blank_id_by_token(token):
+    s = session()
+
+    blanks = s.query(Blanks).filter(Blanks.token == token)
+
+    blank_id = blanks[0].id
+
+    return blank_id
+
+
 def get_all_blanks(state="all"):
     s = session()
 
@@ -353,3 +364,36 @@ def get_all_blanks(state="all"):
     ]
 
     return all_blanks
+
+
+def add_new_user(token):
+    s = session()
+
+    last_id = len(s.query(Users).all()) + 1
+
+    user = Users(
+        token=token
+    )
+
+    s.add(user)
+    s.commit()
+
+    return last_id
+
+
+def add_new_users_answers(data, blank_id, user_id):
+
+    s = session()
+
+    for curr_row in data:
+        user_answers = UserAnswers(
+            blankId=blank_id,
+            userId=user_id,
+            question=curr_row['question'],
+            questionType=curr_row['questiontype'],
+            answer=curr_row['answer'],
+            registrationNumber=curr_row['registrationnumber']
+        )
+        s.add(user_answers)
+
+    s.commit()

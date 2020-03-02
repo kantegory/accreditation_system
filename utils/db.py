@@ -80,6 +80,7 @@ class UserAnswers(Base):
     question = Column(String)
     questionType = Column(String)
     answer = Column(String)
+    registrationNumber = Column(Integer)
 
 
 Base.metadata.create_all(bind=engine)

@@ -1,7 +1,8 @@
 import bottle
 from bottle import request, response, route, template, static_file, auth_basic, FormsDict
 from utils.db_helper import create_blank
-from utils.db_manage import get_all_blanks
+from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
+    add_new_user, get_blank_id_by_token, add_new_users_answers
 import json
 
 
@@ -41,9 +42,25 @@ def get_admin_report_page():
     return template('assets/report.tpl')
 
 
-@route('/quiz')
-def get_quiz_page():
-    return template('assets/quiz.tpl')
+@route('/quiz/<token>')
+def get_quiz_page(token):
+    questions = get_all_questions_by_token(token)
+    return template('assets/quiz.tpl', questions=questions, token=token)
+
+
+@route('/quiz/<token>/', method='POST')
+def write_new_user_answers(token):
+    user_id = add_new_user(token)
+    blank_id = get_blank_id_by_token(token)
+
+    answers = request.body.read().decode('utf-8')
+    answers = json.loads(answers)
+    answers = [json.loads(answer) for answer in answers]
+
+    add_new_users_answers(answers, blank_id, user_id)
+    print('answers', answers)
+    print('type', type(answers))
+
 
 
 def main(_host="localhost"):
