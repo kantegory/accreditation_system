@@ -14,8 +14,8 @@
 </style>
 
 <body>
-    <header>
-        <h1>Админ-панель | Отчёт по анкете 1</h1>
+    <header class="navbar bg-dark">
+        <div class="p-3 navbar-brand text-white">Админ-панель | Отчёт по анкете 1</div>
     </header>
     <main class="d-flex flex-row p-3">
         <aside class="w-25 border border-light bg-light overflow-auto">
@@ -32,24 +32,24 @@
             <section class="p-3">
                 <h2>Отчёт по анкете {{ blank['name'] }}</h2>
                 <table class="table">
-                  <thead>
-                    <tr>
-                    <th scope="row">Номер вопроса</th>
-                    <td>Тип вопроса</td>
-                    <td>Регистрационный номер проф. стандарта</td>
-                    <td>Ответ</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  %for i in range(len(reports)):
-                    <tr>
-                      <th scope="row">{{ i }}</th>
-                      <td>{{ reports[i]['questionType'] }}</td>
-                      <td>{{ reports[i]['registrationNumber']}}</td>
-                      <td>{{ reports[i]['answer'] }}</td>
-                    </tr>
-                  %end
-                  </tbody>
+                    <thead>
+                        <tr>
+                            <th scope="row">Номер вопроса</th>
+                            <td>Тип вопроса</td>
+                            <td>Регистрационный номер проф. стандарта</td>
+                            <td>Ответ</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        %for i in range(len(reports)):
+                        <tr>
+                            <th scope="row">{{ i }}</th>
+                            <td>{{ reports[i]['questionType'] }}</td>
+                            <td>{{ reports[i]['registrationNumber']}}</td>
+                            <td>{{ reports[i]['answer'] }}</td>
+                        </tr>
+                        %end
+                    </tbody>
                 </table>
             </section>
         </article>

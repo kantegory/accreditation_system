@@ -8,7 +8,7 @@ import json
 
 
 def check(user, password):
-    return user == "kant" and password == "eter"
+    return user == "" and password == ""
 
 
 @route('/admin')

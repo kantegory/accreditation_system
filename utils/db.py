@@ -91,7 +91,7 @@ class Reports(Base):
 
 
 class Recommendations(Base):
-    __tablename__ = "reports"
+    __tablename__ = "recommendations"
     id = Column(Integer, primary_key=True)
     report_id = Column(Integer)
     codeTF = Column(String)
