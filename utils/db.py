@@ -83,4 +83,19 @@ class UserAnswers(Base):
     registrationNumber = Column(Integer)
 
 
+class Reports(Base):
+    __tablename__ = "reports"
+    id = Column(Integer, primary_key=True)
+    blankId = Column(Integer)
+    commonKoef = Column(Integer)
+
+
+class Recommendations(Base):
+    __tablename__ = "reports"
+    id = Column(Integer, primary_key=True)
+    report_id = Column(Integer)
+    codeTF = Column(String)
+    recommendation = Column(String)
+
+
 Base.metadata.create_all(bind=engine)
