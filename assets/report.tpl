@@ -46,7 +46,7 @@
                         <tr>
                             <th scope="row">{{ i }}</th>
                             %for user in users:
-                                %if report['userId'] == user['user_id']:
+                                %if reports[i]['userId'] == user['user_id']:
                                     <td>{{ user['user_email'] }}</td>
                                 %end
                             %end
