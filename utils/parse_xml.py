@@ -8,7 +8,7 @@ def get_content_by_tag(page, tag):
 
 def get_text_by_tag(page, tag):
     result = page.findAll(tag)
-    result = [bytes(res.get_text().encode('utf-8')).decode('utf-8') for res in result] if len(result) > 1 else result[0].get_text()
+    result = [res.get_text()for res in result] if len(result) > 1 else result[0].get_text()
     # result = [res.encode(encoding='utf-8') for res in result]
     print(result)
     return result
@@ -55,7 +55,7 @@ def get_particular_work_function(page):
 def parse_xml(filename):
     file = open(filename, 'r')
     xml = file.read()
-    page = BeautifulSoup(xml, 'lxml')
+    page = BeautifulSoup(xml, 'lxml', exclude_encodings=['cp1251'])
     generalized_work_functions = get_generalized_work_functions(page)
 
     return generalized_work_functions
