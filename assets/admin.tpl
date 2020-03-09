@@ -114,7 +114,9 @@
             <section id="reports" class="p-3 d-none">
                 <h2>Отчёты</h2>
                 <div class="list-group w-50 m-auto">
-                    <a class="list-group-item list-group-item-action">Отчёт по анкете 1</a>
+                    %for blank in blanks:
+                        <a href="report/{{ blank['token'] }}" class="list-group-item list-group-item-action">Отчёт по анкете {{ blank['name'] }}</a>
+                    $end
                 </div>
             </section>
         </article>

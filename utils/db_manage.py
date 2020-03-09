@@ -410,6 +410,22 @@ def add_new_user(data):
     # return last_id
 
 
+def get_all_users_by_token(token):
+    s = session()
+
+    users = s.query(Users).filter(Users.token == token).all()
+
+    users = [
+        {
+            'user_id': user.id,
+            'user_email': user.email
+        }
+        for user in users
+    ]
+
+    return users
+
+
 def add_new_users_answers(data, blank_id, user_id):
 
     s = session()
