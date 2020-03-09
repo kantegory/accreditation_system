@@ -4,3 +4,4 @@ standards/*.*
 *.db-journal
 *.swp
 *.db
+**pycache**
