@@ -79,10 +79,39 @@
         }).then((result) => { console.log(result) })
     }
 
+    let questionTmpId = 0;
+
     function writeAnswer(id) {
-        let fieldsetID = 'question' + id.split('_')[1];
-        console.log(fieldsetID)
+        let currID = parseInt(id.split('_')[1]);
+        let fieldsetID = 'question' + currID;
+
         document.querySelector('#' + fieldsetID).dataset.answer = document.querySelector('#' + id).value;
+
+        if (currID - questionTmpId === 1) {
+            questionTmpId = currID;
+            saveResults(currID);
+        }
+    }
+
+    function saveResults(id) {
+        let questionData = [];
+
+        questionData.push(JSON.stringify(document.querySelector('#question' + id).dataset));
+
+        let url = '/quiz/{{ token }}/{{ user_id }}';
+
+        fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer',
+            body: JSON.stringify(questionData)
+        }).then((result) => { console.log(result) })
     }
     </script>
 </body>
