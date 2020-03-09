@@ -43,7 +43,7 @@ def add_new_blank(data):
 
 
 def add_new_gwf(data, token):
-    print(data)
+    print('this is data', data)
 
     otf = [
         {
@@ -331,7 +331,6 @@ def get_all_questions_by_token(token):
     blank_id = blank[0].id
 
     questions = get_all_questions_by_blank_id(blank_id)
-    print('questions', questions)
     return questions
 
 

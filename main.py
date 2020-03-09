@@ -33,15 +33,10 @@ def get_admin_page():
 @route('/admin/new_blank', method="POST")
 def create_new_blank():
 
-    emails = request.forms.get('emails').split(',')
-    emails = [email.strip() for email in emails]
-
     data = {
         'forms': request.forms,
         'files': request.files
     }
-
-    print(emails)
 
     token = create_blank(data)
 
@@ -81,8 +76,6 @@ def write_new_user_answers(token, user_id):
     answers = [json.loads(answer) for answer in answers]
 
     add_new_users_answers(answers, blank_id, user_id)
-    print('answers', answers)
-    print('type', type(answers))
 
 
 def main(_host="localhost"):

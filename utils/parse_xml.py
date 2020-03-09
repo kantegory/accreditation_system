@@ -8,7 +8,6 @@ def get_content_by_tag(page, tag):
 
 def get_text_by_tag(page, tag):
     result = page.findAll(tag)
-    print('tag', tag)
     result = [res.get_text() for res in result] if len(result) > 1 else result[0].get_text()
     return result
 

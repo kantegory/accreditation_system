@@ -13,7 +13,7 @@ def create_blank(data):
     emails = [email.strip() for email in emails]
 
     for file in files:
-        print(file)
+
         filename = '{}{}'.format(path, file.filename)
         all_files = [f for f in listdir(path) if isfile(join(path, f))]
         if file.filename not in all_files:
