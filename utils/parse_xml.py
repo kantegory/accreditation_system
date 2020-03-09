@@ -54,8 +54,7 @@ def get_particular_work_function(page):
 def parse_xml(filename):
     file = open(filename, 'r')
     xml = file.read()
-    page = BeautifulSoup(xml, 'lxml')
-    print(page)
+    page = BeautifulSoup(xml, 'lxml', from_encoding="UTF-8")
     generalized_work_functions = get_generalized_work_functions(page)
 
     return generalized_work_functions
