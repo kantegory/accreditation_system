@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Админ-панель | Анкета 1</title>
+    <title>Админ-панель | {{ blank['name'] }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <style>
@@ -21,10 +21,10 @@
         <aside class="w-25 border border-light bg-light overflow-auto">
             <nav id="" class="navbar navbar-light p-3">
                 <div class="list-group w-100 m-auto">
-                    <a href="" class="list-group-item list-group-item-action">Создать анкету</a>
-                    <a href="" class="list-group-item list-group-item-action">Анкеты на модерации</a>
-                    <a href="" class="list-group-item list-group-item-action active">Все анкеты</a>
-                    <a href="" class="list-group-item list-group-item-action">Посмотреть отчёты</a>
+                    <a href="/admin" class="list-group-item list-group-item-action">Создать анкету</a>
+                    <a href="/admin" class="list-group-item list-group-item-action">Анкеты на модерации</a>
+                    <a href="/admin" class="list-group-item list-group-item-action active">Все анкеты</a>
+                    <a href="/admin" class="list-group-item list-group-item-action">Посмотреть отчёты</a>
                 </div>
             </nav>
         </aside>

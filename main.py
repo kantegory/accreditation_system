@@ -1,5 +1,5 @@
 import bottle
-from bottle import request, response, route, template, auth_basic
+from bottle import request, response, route, template, auth_basic, redirect
 from utils.db_helper import create_blank
 from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     add_new_user, get_blank_id_by_token, add_new_users_answers, \
@@ -33,15 +33,19 @@ def get_admin_page():
 @route('/admin/new_blank', method="POST")
 def create_new_blank():
 
+    emails = request.forms.get('emails').split(',')
+    emails = [email.strip() for email in emails]
+
     data = {
         'forms': request.forms,
         'files': request.files
     }
 
-    create_blank(data)
+    print(emails)
 
-    response.status = 200
-    return response
+    token = create_blank(data)
+
+    redirect('/admin/blank/{}'.format(token))
 
 
 @route('/admin/blank/<token>')
@@ -61,15 +65,15 @@ def get_admin_report_page(token):
     return template('assets/report.tpl', reports=reports, blank=blank)
 
 
-@route('/quiz/<token>')
-def get_quiz_page(token):
+@route('/quiz/<token>/<user_id>')
+def get_quiz_page(token, user_id):
     questions = get_all_questions_by_token(token)
-    return template('assets/quiz.tpl', questions=questions, token=token)
+    return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id)
 
 
-@route('/quiz/<token>/', method='POST')
-def write_new_user_answers(token):
-    user_id = add_new_user(token)
+@route('/quiz/<token>/<user_id>', method='POST')
+def write_new_user_answers(token, user_id):
+    # user_id = add_new_user(token)
     blank_id = get_blank_id_by_token(token)
 
     answers = request.body.read().decode('utf-8')

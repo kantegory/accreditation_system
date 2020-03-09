@@ -63,7 +63,7 @@
         questionData.push(JSON.stringify(document.querySelector('#question{{ i }}').dataset));
         %end
 
-        let url = '/quiz/{{ token }}/';
+        let url = '/quiz/{{ token }}/{{ user_id }}';
 
         fetch(url, {
             method: 'POST',

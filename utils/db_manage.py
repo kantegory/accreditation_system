@@ -39,6 +39,8 @@ def add_new_blank(data):
     gwf = data['standards']
     add_new_gwf(gwf, token)
 
+    return token
+
 
 def add_new_gwf(data, token):
     print(data)
@@ -390,19 +392,23 @@ def get_all_blanks(state="all"):
     return all_blanks
 
 
-def add_new_user(token):
+def add_new_user(data):
     s = session()
 
-    last_id = len(s.query(Users).all()) + 1
+    # last_id = len(s.query(Users).all()) + 1
 
-    user = Users(
-        token=token
-    )
+    for user_data in data:
 
-    s.add(user)
+        user = Users(
+            token=user_data['token'],
+            email=user_data['email']
+        )
+
+        s.add(user)
+
     s.commit()
 
-    return last_id
+    # return last_id
 
 
 def add_new_users_answers(data, blank_id, user_id):

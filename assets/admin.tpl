@@ -52,6 +52,13 @@
                         <div class="d-flex flex-row mt-2" id="fileBtns">
                             <button class="btn btn-primary" onclick="editFileAmount('add')" id="addFile">Добавить ещё</button>
                         </div>
+                        <div class="form-group">
+                            <div class="d-flex flex-column">
+                                <label for="">Кому предназначена анкета?</label>
+                                <small>Введите все почтовые адреса, которые должны получить доступ к этой анкете, через запятую</small>
+                            </div>
+                            <input type="text" class="form-control" placeholder="johndoe@gmail.com..." name="emails">
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить на модерацию</button>
                 </form>

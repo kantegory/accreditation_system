@@ -1,13 +1,17 @@
 from os import listdir
 from os.path import isfile, join
 from .parse_xml import parse_xml
-from .db_manage import add_new_blank
+from .db_manage import add_new_blank, add_new_user
 
 
 def create_blank(data):
     path = './standards/'
     files = [data['files'].get('fileInput{}'.format(i)) for i in range(1, len(data['files']) + 1)]
-    print('files', files)
+    token = ''
+
+    emails = data['forms'].get('emails').split(',')
+    emails = [email.strip() for email in emails]
+
     for file in files:
         print(file)
         filename = '{}{}'.format(path, file.filename)
@@ -20,4 +24,16 @@ def create_blank(data):
             'standards': parse_xml(filename)
         }
 
-        add_new_blank(result)
+        token = add_new_blank(result)
+
+    user_data = [
+        {
+            'email': email,
+            'token': token
+        }
+        for email in emails
+    ]
+
+    add_new_user(user_data)
+
+    return token
