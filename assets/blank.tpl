@@ -39,12 +39,11 @@
                     <div class="d-flex flex-row">
                         <small class="text-muted ml-2">Используемые профстандарты:
                         %for i in range(len(standards)):
-                            %if len(standards) == 1:
-                                {{ standards[i] }}.
-                            %elif len(standards) == i:
+                            %if len(standards) - 1 == i:
                                 {{ standards[i]}}.
                             %else:
                                 {{ standards[i] }},
+                            %end
                         %end
                         </small>
                     </div>

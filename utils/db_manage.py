@@ -281,30 +281,33 @@ def get_all_questions_by_blank_id(blank_id):
 
     standards = s.query(BlankStandards).filter(BlankStandards.blankId == blank_id).all()
 
-    rs = []
-    la = []
-    nk = []
+    _rs = []
+    _la = []
+    _nk = []
 
     for standard in standards:
         rs_standard = get_required_skills_by_registration_number(standard.standardRegistrationNumber)
-        rs.append(rs_standard)
+        _rs.append(rs_standard)
 
         la_standard = get_labor_actions_by_registration_number(standard.standardRegistrationNumber)
-        la.append(la_standard)
+        _la.append(la_standard)
 
         nk_standard = get_necessary_knowledges_by_registration_number(standard.standardRegistrationNumber)
-        nk.append(nk_standard)
+        _nk.append(nk_standard)
 
     blank_questions = []
 
-    for question in rs[0]:
-        blank_questions.append(question)
+    for rs in _rs:
+        for question in rs:
+            blank_questions.append(question)
 
-    for question in la[0]:
-        blank_questions.append(question)
+    for la in _la:
+        for question in la:
+            blank_questions.append(question)
 
-    for question in nk[0]:
-        blank_questions.append(question)
+    for nk in _nk:
+        for question in nk:
+            blank_questions.append(question)
 
     questions = [
         {
