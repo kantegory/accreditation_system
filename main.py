@@ -80,8 +80,8 @@ def write_new_user_answers(token, user_id):
 
 def main(_host="localhost"):
     app = bottle.app()
-    bottle.run(app=app, host=_host, port=8082)
+    bottle.run(app=app, host=_host, port=8080)
 
 
 if __name__ == "__main__":
-    main()
+    main('0.0.0.0')

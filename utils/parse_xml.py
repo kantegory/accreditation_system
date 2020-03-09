@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import io
 
 
 def get_content_by_tag(page, tag):
@@ -8,7 +9,7 @@ def get_content_by_tag(page, tag):
 
 def get_text_by_tag(page, tag):
     result = page.findAll(tag)
-    result = [res.get_text()for res in result] if len(result) > 1 else result[0].get_text()
+    result = [res.get_text().encode('utf-8', 'ignore') for res in result] if len(result) > 1 else result[0].get_text().encode('utf-8', 'ignore')
     # result = [res.encode(encoding='utf-8') for res in result]
     print(result)
     return result
@@ -53,9 +54,11 @@ def get_particular_work_function(page):
 
 
 def parse_xml(filename):
-    file = open(filename, 'r')
-    xml = file.read()
-    page = BeautifulSoup(xml, 'lxml', exclude_encodings=['utf-8'])
+    #file = open(filename, 'r')
+    #xml = file.read()
+    xml = io.open(filename, mode="r", encoding="utf-8")
+    xml = xml.read()
+    page = BeautifulSoup(xml, 'lxml')
     generalized_work_functions = get_generalized_work_functions(page)
 
     return generalized_work_functions
