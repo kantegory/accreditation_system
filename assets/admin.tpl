@@ -45,7 +45,7 @@
                                 </small>
                             </p>
                             <div class="custom-file mt-2" id="fileInput1">
-                                <input type="file" class="custom-file-input" name="fileInput1" required>
+                                <input type="file" class="custom-file-input" name="fileInput1" onchange="updateLabel(this.value, this.name)" required>
                                 <label class="custom-file-label">Выберите XML-файл...</label>
                             </div>
                         </div>
@@ -121,7 +121,7 @@
             fileAmounts++;
             document.querySelector('#fileInputs').innerHTML += `
 				<div class="custom-file mt-2" id="fileInput` + fileAmounts + `">
-                    <input type="file" class="custom-file-input" required name="fileInput` + fileAmounts + `">
+                    <input type="file" class="custom-file-input" required name="fileInput` + fileAmounts + `" onchange="updateLabel(this.value, this.name)">
                     <label class="custom-file-label">Выберите XML-файл...</label>
                 </div>
         	`;
@@ -153,6 +153,14 @@
         elem.classList.add('active', 'text-white');
         Array.from(document.querySelectorAll('#sections section')).map((elem) => { elem.classList.add('d-none') });
         document.querySelector(id).classList.remove('d-none');
+    }
+
+    // add listeners for custom-file-input labels changing to values
+    function updateLabel(value, id) {
+        let filename = value.split('\\');
+        filename = filename[filename.length - 1];
+
+        document.querySelector('#' + id + ' .custom-file-label').innerHTML = filename;
     }
     </script>
 </body>
