@@ -4,7 +4,7 @@ from hashlib import md5
 
 
 def get_token(data):
-    result = data['blank_name'] + data['start_date'] + data['end_date']
+    result = data['blank_name']
     result = result.encode('utf-8')
     result = md5(result).hexdigest()
 
@@ -14,8 +14,6 @@ def get_token(data):
 def add_new_blank(data):
     result = {
         'blank_name': data['blank_name'],
-        'start_date': data['start_date'],
-        'end_date': data['end_date']
     }
 
     token = get_token(result)
@@ -32,8 +30,6 @@ def add_new_blank(data):
     if token not in check:
         blank = Blanks(
             name=data['blank_name'],
-            startDate=data['start_date'],
-            endDate=data['end_date'],
             token=token,
             state=state
         )
@@ -352,13 +348,23 @@ def get_blank_info_by_token(token):
 
     blank_info = {
         'name': blanks.name,
-        'startDate': blanks.startDate,
-        'endDate': blanks.endDate,
         'token': token,
         'state': blanks.state
     }
 
     return blank_info
+
+
+def get_all_standards_by_token(token):
+    s = session()
+
+    blank_id = get_blank_id_by_token(token)
+
+    standards = s.query(BlankStandards).filter(BlankStandards.blankId == blank_id)
+
+    all_standards = [standard.standardRegistrationNumber for standard in standards]
+
+    return all_standards
 
 
 def get_all_blanks(state="all"):
@@ -372,8 +378,6 @@ def get_all_blanks(state="all"):
     all_blanks = [
         {
             'name': blank.name,
-            'startDate': blank.startDate,
-            'endDate': blank.endDate,
             'token': blank.token,
             'state': blank.state
         }

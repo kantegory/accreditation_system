@@ -53,14 +53,6 @@
                             <button class="btn btn-primary" onclick="editFileAmount('add')" id="addFile">Добавить ещё</button>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="">Дата начала:</label>
-                        <input type="date" class="form-control" name="start_date">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Дата конца:</label>
-                        <input type="date" class="form-control" name="end_date">
-                    </div>
                     <button type="submit" class="btn btn-primary">Отправить на модерацию</button>
                 </form>
             </section>
@@ -70,9 +62,20 @@
                     %for moderatingBlank in moderatingBlanks:
                     <a href="admin/blank/{{ moderatingBlank['token'] }}" class="list-group-item list-group-item-action">{{ moderatingBlank['name'] }}</a>
                     <div class="d-flex flex-row">
-                        <small class="text-muted">Дата начала: {{ moderatingBlank['startDate'] }}</small>
-                        <small class="text-muted ml-2">Дата окончания: {{ moderatingBlank['endDate'] }}</small>
-                        <small class="text-muted ml-2">Используемые профстандарты:</small>
+                        <small class="text-muted ml-2">Используемые профстандарты:
+                        %for standard in standards:
+                            %if moderatingBlank['token'] == standard['token']:
+                                %for i in range(len(standard['standards'])):
+                                    %prof = standard['standards'][i]
+                                    %if i == len(standard['standards']) - 1:
+                                        {{ prof }}.
+                                    %else:
+                                        {{ prof }},
+                                    %end
+                                %end
+                             %end
+                         %end
+                         </small>
                     </div>
                     %end
                 </div>
@@ -83,9 +86,20 @@
                     %for blank in blanks:
                     <a href="admin/blank/{{ blank['token'] }}" class="list-group-item list-group-item-action">{{ blank['name'] }}</a>
                     <div class="d-flex flex-row">
-                        <small class="text-muted">Дата начала: {{ blank['startDate'] }}</small>
-                        <small class="text-muted ml-2">Дата окончания: {{ blank['endDate'] }}</small>
-                        <small class="text-muted ml-2">Используемые профстандарты:</small>
+                        <small class="text-muted ml-2">Используемые профстандарты:
+                        %for standard in standards:
+                            %if blank['token'] == standard['token']:
+                                %for i in range(len(standard['standards'])):
+                                    %prof = standard['standards'][i]
+                                    %if i == len(standard['standards']) - 1:
+                                        {{ prof }}.
+                                    %else:
+                                        {{ prof }},
+                                    %end
+                                %end
+                             %end
+                         %end
+                        </small>
                     </div>
                     %end
                 </div>

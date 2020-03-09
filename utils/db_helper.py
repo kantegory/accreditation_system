@@ -14,8 +14,6 @@ def create_blank(data):
 
     result = {
         'blank_name': data['forms'].get('blank_name'),
-        'start_date': data['forms'].get('start_date'),
-        'end_date': data['forms'].get('end_date'),
         'standards': parse_xml(filename)
     }
 

@@ -3,3 +3,4 @@
 standards/*.*
 *.db-journal
 *.swp
+*.db

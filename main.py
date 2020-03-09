@@ -1,9 +1,9 @@
 import bottle
-from bottle import request, response, route, template, static_file, auth_basic, FormsDict
+from bottle import request, response, route, template, auth_basic
 from utils.db_helper import create_blank
 from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     add_new_user, get_blank_id_by_token, add_new_users_answers, \
-    get_blank_info_by_token, get_report_by_token
+    get_blank_info_by_token, get_report_by_token, get_all_standards_by_token
 import json
 
 
@@ -14,7 +14,20 @@ def check(user, password):
 @route('/admin')
 @auth_basic(check)
 def get_admin_page():
-    return template('assets/admin.tpl', blanks=get_all_blanks(), moderatingBlanks=get_all_blanks('moderating'))
+
+    blanks = get_all_blanks()
+    moderating_blanks = get_all_blanks('moderating')
+    tokens = [blank['token'] for blank in blanks]
+
+    standards = [
+        {
+            'standards': get_all_standards_by_token(token),
+            'token': token
+        }
+        for token in tokens
+    ]
+
+    return template('assets/admin.tpl', blanks=blanks, moderatingBlanks=moderating_blanks, standards=standards)
 
 
 @route('/admin/new_blank', method="POST")
@@ -36,7 +49,8 @@ def create_new_blank():
 def get_admin_blank_page(token):
     blank = get_blank_info_by_token(token)
     questions = get_all_questions_by_token(token)
-    return template('assets/blank.tpl', questions=questions, blank=blank, token=token)
+    standards = get_all_standards_by_token(token)
+    return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards)
 
 
 @route('/admin/report/<token>')

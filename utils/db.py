@@ -13,6 +13,7 @@ class Users(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     token = Column(String)
+    email = Column(String)
 
 
 class Admin(Base):
@@ -59,8 +60,6 @@ class Blanks(Base):
     __tablename__ = "blanks"
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    startDate = Column(String)
-    endDate = Column(String)
     token = Column(String)
     state = Column(String)
 

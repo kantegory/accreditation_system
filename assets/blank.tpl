@@ -15,7 +15,7 @@
 
 <body>
     <header class="navbar bg-dark">
-        <div class="p-3 navbar-brand text-white">Админ-панель | Анкета 1</div>
+        <div class="p-3 navbar-brand text-white">Админ-панель | {{ blank['name'] }}</div>
     </header>
     <main class="d-flex flex-row p-3">
         <aside class="w-25 border border-light bg-light overflow-auto">
@@ -30,19 +30,23 @@
         </aside>
         <article class="container-fluid bg-light">
             <section class="p-3">
-                <h2>Анкета 1</h2>
+                <h2>{{ blank['name'] }}</h2>
                 <form class="w-50 m-auto">
                     <div class="form-group">
                         <label for="">Название:</label>
                         <input type="text" class="form-control" placeholder="Название..." value="{{ blank['name'] }}">
                     </div>
-                    <div class="form-group">
-                        <label for="">Дата начала:</label>
-                        <input type="date" class="form-control" value="{{ blank['startDate'] }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Дата конца:</label>
-                        <input type="date" class="form-control" value="{{ blank['endDate'] }}">
+                    <div class="d-flex flex-row">
+                        <small class="text-muted ml-2">Используемые профстандарты:
+                        %for i in range(len(standards)):
+                            %if len(standards) == 1:
+                                {{ standards[i] }}.
+                            %elif len(standards) == i:
+                                {{ standards[i]}}.
+                            %else:
+                                {{ standards[i] }},
+                        %end
+                        </small>
                     </div>
                     <div class="form-group">
                         Вопросы:
