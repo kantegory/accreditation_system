@@ -115,8 +115,8 @@
                 <h2>Отчёты</h2>
                 <div class="list-group w-50 m-auto">
                     %for blank in blanks:
-                        <a href="report/{{ blank['token'] }}" class="list-group-item list-group-item-action">Отчёт по анкете {{ blank['name'] }}</a>
-                    $end
+                        <a href="/admin/report/{{ blank['token'] }}" class="list-group-item list-group-item-action">Отчёт по анкете {{ blank['name'] }}</a>
+                    %end
                 </div>
             </section>
         </article>
