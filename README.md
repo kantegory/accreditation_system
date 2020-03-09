@@ -18,7 +18,6 @@ python3 main.py
 
 Now accreditation system is avaliable on http://hostname:8080/
 
-Admin-panel: http://hostname:8080/admin
-You can configure login and password for admin-panel in main.py (def check()).
-
+Admin-panel: http://hostname:8080/admin  
+You can configure login and password for admin-panel in main.py (def check()).  
 Quiz for graduates: http://hostname:8080/quiz/<token>/<id>
