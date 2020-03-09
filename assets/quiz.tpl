@@ -88,15 +88,17 @@
         document.querySelector('#' + fieldsetID).dataset.answer = document.querySelector('#' + id).value;
 
         if (currID - questionTmpId === 1) {
+            saveResults(questionTmpId);
             questionTmpId = currID;
-            saveResults(currID);
         }
     }
 
     function saveResults(id) {
+        console.log(id)
         let questionData = [];
+        let dataset = document.querySelector('#question' + id).dataset;
 
-        questionData.push(JSON.stringify(document.querySelector('#question' + id).dataset));
+        questionData.push(JSON.stringify(dataset));
 
         let url = '/quiz/{{ token }}/{{ user_id }}';
 
@@ -112,7 +114,21 @@
             referrer: 'no-referrer',
             body: JSON.stringify(questionData)
         }).then((result) => { console.log(result) })
+
+        let questionID = '#question' + id;
+        let answerID = '#questions' + dataset.answer + '_' + id;
+
+        localStorage.setItem(questionID, answerID);
     }
+
+    window.addEventListener('load', function() {
+        if (localStorage.length > 0) {
+            for (let i = 0; i < localStorage.length; i++) {
+                let answerID = localStorage.getItem('#question' + i);
+                document.querySelector(answerID).checked = true;
+            }
+        }
+    })
     </script>
 </body>
 
