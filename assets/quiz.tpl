@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Анкета 1</title>
+    <title>{{ blank['name'] }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <style>
@@ -15,11 +15,11 @@
 
 <body>
     <header class="navbar bg-dark">
-        <div class="p-3 navbar-brand text-white">Анкета 1</div>
+        <div class="p-3 navbar-brand text-white">{{ blank['name'] }}</div>
     </header>
     <main class="d-flex flex-row p-3 bg-light">
         <section class="container-fluid">
-            <h2>Анкета 1</h2>
+            <h2>{{ blank['name'] }}</h2>
             <form class="w-50 m-auto">
                 %for i in range(len(questions)):
                 <fieldset class="w-100 mt-2" id="question{{ i }}" data-questionType="{{ questions[i]['questionType'] }}"

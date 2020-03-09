@@ -63,7 +63,8 @@ def get_admin_report_page(token):
 @route('/quiz/<token>/<user_id>')
 def get_quiz_page(token, user_id):
     questions = get_all_questions_by_token(token)
-    return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id)
+    blank_info = get_blank_info_by_token(token)
+    return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id, blank=blank_info)
 
 
 @route('/quiz/<token>/<user_id>', method='POST')
