@@ -6,9 +6,9 @@ ITMO Practice 2020
 git clone https://github.com/kantegory/accreditation_system.git
 ```
 
-2. Install requirments
+2. Install requirements
 ```bash
-pip3 install -r requirments.txt
+pip3 install -r requierments.txt
 ```
 
 3. Launch main.py
