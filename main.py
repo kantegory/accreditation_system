@@ -6,10 +6,11 @@ from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     get_blank_info_by_token, get_report_by_token, get_all_standards_by_token, \
     get_all_users_by_token
 import json
+from utils.config import *
 
 
 def check(user, password):
-    return user == "" and password == ""
+    return user == CONFIG["ADMIN"] and password == CONFIG["ADMIN_PASSWORD"]
 
 
 @route('/admin')

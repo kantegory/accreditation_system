@@ -1,4 +1,6 @@
 CONFIG = {
     'EMAIL': 'email',
-    'PASSWORD': 'password'
+    'PASSWORD': 'password',
+    'ADMIN': 'admin',
+    'ADMIN_PASSWORD': 'password'
 }
