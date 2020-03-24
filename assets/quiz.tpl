@@ -28,24 +28,24 @@
                     <legend>Выберите наиболее подходящее утверждение для следующей компетенции:</legend>
                     <p>{{ questions[i]['question'] }}</p>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="questions1_{{ i }}" name="question{{ i }}" class="custom-control-input" value="1" required onclick="writeAnswer(this.id)">
-                        <label class="custom-control-label" for="questions1_{{ i }}">Не было в программе образовательной организации</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="questions2_{{ i }}" name="question{{ i }}" class="custom-control-input" value="2" onclick="writeAnswer(this.id)">
-                        <label class="custom-control-label" for="questions2_{{ i }}">Частично освоил в образовательной организации, но не востребовано на рабочем месте</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="questions3_{{ i }}" name="question{{ i }}" class="custom-control-input" value="3" onclick="writeAnswer(this.id)">
-                        <label class="custom-control-label" for="questions3_{{ i }}">Освоил в образовательной организации, но не востребовано на рабочем месте</label>
+                        <input type="radio" id="questions5_{{ i }}" name="question{{ i }}" class="custom-control-input" value="5" onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions5_{{ i }}">Освоил в образовательной организации и соответствует требованиям работодателя</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input type="radio" id="questions4_{{ i }}" name="question{{ i }}" class="custom-control-input" value="4" onclick="writeAnswer(this.id)">
                         <label class="custom-control-label" for="questions4_{{ i }}">Частично освоил в образовательной организации и соответствует требованиям работодателя</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="questions5_{{ i }}" name="question{{ i }}" class="custom-control-input" value="5" onclick="writeAnswer(this.id)">
-                        <label class="custom-control-label" for="questions5_{{ i }}">Освоил в образовательной организации и соответствует требованиям работодателя</label>
+                        <input type="radio" id="questions3_{{ i }}" name="question{{ i }}" class="custom-control-input" value="3" onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions3_{{ i }}">Освоил в образовательной организации, но не востребовано на рабочем месте</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="questions2_{{ i }}" name="question{{ i }}" class="custom-control-input" value="2" onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions2_{{ i }}">Частично освоил в образовательной организации, но не востребовано на рабочем месте</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="questions1_{{ i }}" name="question{{ i }}" class="custom-control-input" value="1" required onclick="writeAnswer(this.id)">
+                        <label class="custom-control-label" for="questions1_{{ i }}">Не было в программе образовательной организации, но востребовано на рабочем месте</label>
                     </div>
                 </fieldset>
                 %end
