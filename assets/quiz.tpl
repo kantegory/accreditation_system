@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>{{ blank['name'] }}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <style>
     .list-group-item-action, .custom-radio > * {
@@ -47,7 +50,7 @@
                     </div>
                 </fieldset>
                 %end
-                <button class="btn btn-primary mt-2" onclick="sendResults()">Отправить</button>
+                <button class="btn btn-primary mt-2" onclick="sendResults()" data-toggle="modal" data-target="#success">Отправить</button>
             </form>
         </section>
     </main>
@@ -64,7 +67,7 @@
                     <p>Спасибо за прохождение анкеты!</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="close">Закрыть</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Закрыть</button>
                 </div>
             </div>
         </div>
@@ -75,10 +78,9 @@
 
         let questionData = [];
 
-        %
-        for i in range(len(questions)):
-            questionData.push(JSON.stringify(document.querySelector('#question{{ i }}').dataset)); %
-        end
+        % for i in range(len(questions)):
+            questionData.push(JSON.stringify(document.querySelector('#question{{ i }}').dataset));
+        % end
 
         let url = '/quiz/{{ token }}/{{ user_id }}';
 
