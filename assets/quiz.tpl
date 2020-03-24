@@ -22,9 +22,7 @@
             <h2>{{ blank['name'] }}</h2>
             <form class="w-50 m-auto">
                 %for i in range(len(questions)):
-                <fieldset class="w-100 mt-2" id="question{{ i }}" data-questionType="{{ questions[i]['questionType'] }}"
-                data-registrationNumber="{{ questions[i]['standardRegistrationNumber'] }}" data-answer=""
-                data-codeOTF="{{ questions[i]['codeTF'] }}" data-question="{{ questions[i]['question'] }}">
+                <fieldset class="w-100 mt-2" id="question{{ i }}" data-questionType="{{ questions[i]['questionType'] }}" data-registrationNumber="{{ questions[i]['standardRegistrationNumber'] }}" data-answer="" data-codeOTF="{{ questions[i]['codeTF'] }}" data-question="{{ questions[i]['question'] }}">
                     <legend>Выберите наиболее подходящее утверждение для следующей компетенции:</legend>
                     <p>{{ questions[i]['question'] }}</p>
                     <div class="custom-control custom-radio">
@@ -53,15 +51,34 @@
             </form>
         </section>
     </main>
+    <div class="modal" tabindex="-1" role="dialog" id="success">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Спасибо!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Спасибо за прохождение анкеты!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="close">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript">
     function sendResults() {
         event.preventDefault();
 
         let questionData = [];
 
-        %for i in range(len(questions)):
-        questionData.push(JSON.stringify(document.querySelector('#question{{ i }}').dataset));
-        %end
+        %
+        for i in range(len(questions)):
+            questionData.push(JSON.stringify(document.querySelector('#question{{ i }}').dataset)); %
+        end
 
         let url = '/quiz/{{ token }}/{{ user_id }}';
 
