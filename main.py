@@ -1,8 +1,8 @@
 import bottle
-from bottle import request, response, route, template, auth_basic, redirect
+from bottle import request, route, template, auth_basic, redirect
 from utils.db_helper import create_blank
 from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
-    add_new_user, get_blank_id_by_token, add_new_users_answers, \
+    get_blank_id_by_token, add_new_users_answers, \
     get_blank_info_by_token, get_report_by_token, get_all_standards_by_token, \
     get_all_users_by_token
 import json

@@ -95,8 +95,8 @@
             redirect: 'follow', // manual, *follow, error
             referrer: 'no-referrer',
             body: JSON.stringify(questionData)
-        }).then((result) => { console.log(result) })
-    }
+        }).then((result) => { console.log(result); window.location = "http://aorpo.spb.ru/"; });
+    };
 
     let questionTmpId = 0;
 
@@ -110,7 +110,7 @@
             saveResults(questionTmpId);
             questionTmpId = currID;
         }
-    }
+    };
 
     function saveResults(id) {
         console.log(id)
@@ -138,7 +138,7 @@
         let answerID = '#questions' + dataset.answer + '_' + id;
 
         localStorage.setItem(questionID, answerID);
-    }
+    };
 
     window.addEventListener('load', function() {
         if (localStorage.length > 0) {
@@ -147,7 +147,7 @@
                 document.querySelector(answerID).checked = true;
             }
         }
-    })
+    });
     </script>
 </body>
 
