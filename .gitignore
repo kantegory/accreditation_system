@@ -5,3 +5,4 @@ standards/*.*
 *.swp
 *.db
 **pycache**
+*/config.py
