@@ -1,5 +1,5 @@
 from .db import GeneralizedWorkFunction, RequiredSkills, LaborActions, NecessaryKnowledges, \
-    Blanks, BlankStandards, Users, UserAnswers, session
+    Blanks, BlankStandards, Users, UserAnswers, session, Competences
 from hashlib import md5
 
 
@@ -471,3 +471,18 @@ def get_report_by_token(token):
     user_answers = get_user_answers_by_blank_id(blank_id)
 
     return user_answers
+
+
+def mark_competences_as_used(competences, token):
+
+    s = session()
+
+    for competence in competences:
+        competence = Competences(
+            token=token,
+            registrationNumber=competence['registrationNumber'],
+            competence_id=competence['id']
+        )
+        s.add(competence)
+
+    s.commit()

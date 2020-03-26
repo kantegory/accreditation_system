@@ -97,4 +97,12 @@ class Recommendations(Base):
     recommendation = Column(String)
 
 
+class Competences(Base):
+    __tablename__ = "competences"
+    id = Column(Integer, primary_key=True)
+    token = Column(String)
+    registrationNumber = Column(Integer)
+    competence_id = Column(Integer)
+
+
 Base.metadata.create_all(bind=engine)
