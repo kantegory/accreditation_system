@@ -66,19 +66,48 @@
                                 return re.test(String(email).toLowerCase());
                             }
 
+                            let emails = localStorage.emails === undefined ? [] : JSON.parse(localStorage.emails);
+
                             document.querySelector('#putEmail').addEventListener("keyup", function(event) {
                                 if (event.key === " ") {
                                     this.value = this.value.replace(/\s/g, '');
 
-                                    if (validateEmail(this.value) !== false) {
-                                        document.querySelector('#emails').innerHTML += `
-                                            <span class="bg-info px-2 py-1 text-white text-center mx-2 my-2 rounded">${this.value}</span>
-                                        `;
-
+                                    if (validateEmail(this.value) !== false && emails.includes(this.value) === false) {
+                                        emailAdd(this.value);
                                         this.value = "";
                                     } else {
                                         this.setCustomValidity("Адрес введённой почты некорректен!");
                                     }
+                                }
+                            });
+
+                            function emailAdd(email) {
+                                document.querySelector('#emails').innerHTML += `
+                                    <div class="bg-info px-2 py-1 text-white text-center mx-2 my-2 rounded" id="${email}">${email}
+                                        <button type="button" class="close ml-2 text-white" onclick="emailDel(this)" data-email="${email}">&times;</button>
+                                    </div>
+                                `;
+
+                                if (emails.includes(email) === false) {
+                                    emails.push(email);
+                                    localStorage.emails = JSON.stringify(emails);
+                                }
+                            }
+
+                            function emailDel(btn) {
+                                event.preventDefault();
+                                let id = btn.dataset["email"];
+                                document.getElementById(`${id}`).remove();
+
+                                emails.splice(emails.indexOf(id), 1);
+                                localStorage.emails = JSON.stringify(emails);
+                                console.info(emails.length);
+                            }
+
+                            // add all emails if localStorage isn't clear
+                            window.addEventListener("load", function() {
+                                if (emails.length > 0) {
+                                    emails.map((email) => { emailAdd(email) });
                                 }
                             })
                         </script>
