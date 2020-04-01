@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Админ-панель | {{ blank['name'] }}</title>
+    <title>Админ-панель | Редактирование {{ blank['name'] }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <style>
@@ -64,7 +64,7 @@
                             <p>Код ТФ: {{ questions[i]['codeTF'] }}</p>
                             <p>Регистрационный номер профстандарта: {{ questions[i]['standardRegistrationNumber'] }}</p>
                             <p>Редактировать текст вопроса:</p>
-                            <input type="text" class="form-control" value="{{ questions[i]['question'] }}">
+                            <textarea type="text" class="form-control" rows="4">{{ questions[i]['question'] }}</textarea>
                             <div class="d-flex flex-row mt-2">
                                 <button class="btn btn-info">Сохранить</button><button class="btn btn-danger ml-2">Убрать вопрос</button><button class="btn btn-danger ml-2">Убрать все вопросы этой трудовой функции</button>
                             </div>

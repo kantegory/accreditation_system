@@ -52,13 +52,36 @@
                         <div class="d-flex flex-row mt-2" id="fileBtns">
                             <button class="btn btn-primary" onclick="editFileAmount('add')" id="addFile">Добавить ещё</button>
                         </div>
-                        <div class="form-group">
-                            <div class="d-flex flex-column">
-                                <label for="">Кому предназначена анкета?</label>
-                                <small>Введите все почтовые адреса, которые должны получить доступ к этой анкете, через запятую</small>
-                            </div>
-                            <input type="text" class="form-control" placeholder="johndoe@gmail.com..." name="emails">
+                    </div>
+                    <div class="form-group">
+                        <div class="d-flex flex-column">
+                            <label for="">Кому предназначена анкета?</label>
+                            <small>Введите все почтовые адреса, владельцы которых должны получить доступ к этой анкете, через пробел</small>
                         </div>
+                        <div class="d-flex flex-row flex-wrap" id="emails"></div>
+                        <input type="email" class="form-control" placeholder="johndoe@gmail.com" name="emails" rows="2" id="putEmail" required>
+                        <script>
+                            function validateEmail(email) {
+                                let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                return re.test(String(email).toLowerCase());
+                            }
+
+                            document.querySelector('#putEmail').addEventListener("keyup", function(event) {
+                                if (event.key === " ") {
+                                    this.value = this.value.replace(/\s/g, '');
+
+                                    if (validateEmail(this.value) !== false) {
+                                        document.querySelector('#emails').innerHTML += `
+                                            <span class="bg-info px-2 py-1 text-white text-center mx-2 my-2 rounded">${this.value}</span>
+                                        `;
+
+                                        this.value = "";
+                                    } else {
+                                        this.setCustomValidity("Адрес введённой почты некорректен!");
+                                    }
+                                }
+                            })
+                        </script>
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить на модерацию</button>
                 </form>
