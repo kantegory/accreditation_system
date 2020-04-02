@@ -231,6 +231,7 @@ def get_required_skills_by_registration_number(registration_number):
 
     result = [
         {
+            'id': rs[i].id,
             'codeTF': rs[i].codeTF,
             'registrationNumber': rs[i].registrationNumber,
             'question': rs[i].requiredSkill,
@@ -249,6 +250,7 @@ def get_necessary_knowledges_by_registration_number(registration_number):
 
     result = [
         {
+            'id': nk[i].id,
             'codeTF': nk[i].codeTF,
             'registrationNumber': nk[i].registrationNumber,
             'question': nk[i].necessaryKnowledge,
@@ -267,6 +269,7 @@ def get_labor_actions_by_registration_number(registration_number):
 
     result = [
         {
+            'id': la[i].id,
             'codeTF': la[i].codeTF,
             'registrationNumber': la[i].registrationNumber,
             'question': la[i].laborAction,
@@ -313,6 +316,7 @@ def get_all_questions_by_blank_id(blank_id):
 
     questions = [
         {
+            'id': question['id'],
             'question': question['question'],
             'questionType': question['questionType'],
             'codeTF': question['codeTF'],
@@ -331,6 +335,7 @@ def get_all_questions_by_token(token):
     blank_id = blank[0].id
 
     questions = get_all_questions_by_blank_id(blank_id)
+
     return questions
 
 
@@ -480,9 +485,59 @@ def mark_competences_as_used(competences, token):
     for competence in competences:
         competence = Competences(
             token=token,
-            registrationNumber=competence['registrationNumber'],
-            competence_id=competence['id']
+            competenceId=competence['id'],
+            competenceType=competence['questiontype']
         )
         s.add(competence)
 
     s.commit()
+
+
+def get_all_questions_for_competences(competences):
+
+    s = session()
+
+    tables = {
+        'requiredSkill': RequiredSkills,
+        'necessaryKnowledge': NecessaryKnowledges,
+        'laborAction': LaborActions
+    }
+
+    questions = []
+
+    for competence in competences:
+        curr_type = competence['type']
+        curr_id = competence['id']
+
+        question = s.query(tables[curr_type]).filter(tables[curr_type].id == curr_id).first().__dict__
+
+        question = {
+            'id': question['id'],
+            'question': question[curr_type],
+            'questionType': curr_type,
+            'codeTF': question['codeTF'],
+            'standardRegistrationNumber': question['registrationNumber']
+        }
+
+        questions.append(question)
+
+    return questions
+
+
+def get_competences_by_token(token):
+
+    s = session()
+
+    competences = s.query(Competences).filter(Competences.token == token)
+
+    competences = [
+        {
+            'id': competence.competenceId,
+            'type': competence.competenceType
+        }
+        for competence in competences
+    ]
+
+    questions = get_all_questions_for_competences(competences)
+
+    return questions

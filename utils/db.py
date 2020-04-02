@@ -37,7 +37,7 @@ class RequiredSkills(Base):
     id = Column(Integer, primary_key=True)
     codeTF = Column(String)
     registrationNumber = Column(Integer)
-    requiredSkill = Column(Integer)
+    requiredSkill = Column(String)
 
 
 class LaborActions(Base):
@@ -45,7 +45,7 @@ class LaborActions(Base):
     id = Column(Integer, primary_key=True)
     codeTF = Column(String)
     registrationNumber = Column(Integer)
-    laborAction = Column(Integer)
+    laborAction = Column(String)
 
 
 class NecessaryKnowledges(Base):
@@ -53,7 +53,7 @@ class NecessaryKnowledges(Base):
     id = Column(Integer, primary_key=True)
     codeTF = Column(String)
     registrationNumber = Column(Integer)
-    necessaryKnowledge = Column(Integer)
+    necessaryKnowledge = Column(String)
 
 
 class Blanks(Base):
@@ -101,8 +101,8 @@ class Competences(Base):
     __tablename__ = "competences"
     id = Column(Integer, primary_key=True)
     token = Column(String)
-    registrationNumber = Column(Integer)
-    competence_id = Column(Integer)
+    competenceId = Column(Integer)
+    competenceType = Column(String)
 
 
 Base.metadata.create_all(bind=engine)

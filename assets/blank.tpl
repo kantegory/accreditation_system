@@ -9,8 +9,8 @@
 </head>
 <style>
     .list-group-item-action {
-    cursor: pointer !important
-}
+        cursor: pointer !important
+    }
 </style>
 
 <body>
@@ -31,7 +31,7 @@
         <article class="container-fluid bg-light">
             <section class="p-3">
                 <h2>{{ blank['name'] }}</h2>
-                <form class="w-50 m-auto">
+                <form class="blank-form m-auto">
                     <div class="form-group">
                         <label for="">Название:</label>
                         <input type="text" class="form-control" placeholder="Название..." value="{{ blank['name'] }}">
@@ -51,7 +51,9 @@
                         Вопросы:
                         %for i in range(len(questions)):
                         %questionType = ''
-                        <div class="form-group mt-2 border border-secondary p-3">
+                        <div class="question form-group mt-2 border border-secondary p-3" id="question{{ i }}" data-id="{{ questions[i]['id'] }}"
+                        data-questionType="{{ questions[i]['questionType'] }}" data-registrationNumber="{{ questions[i]['standardRegistrationNumber'] }}"
+                        data-codeOTF="{{ questions[i]['codeTF'] }}" data-question="{{ questions[i]['question'] }}">
                             %if questions[i]['questionType'] == 'requiredSkill':
                                 %questionType = 'Навыки'
                             %elif questions[i]['questionType'] == 'necessaryKnowledge':
@@ -64,18 +66,96 @@
                             <p>Код ТФ: {{ questions[i]['codeTF'] }}</p>
                             <p>Регистрационный номер профстандарта: {{ questions[i]['standardRegistrationNumber'] }}</p>
                             <p>Редактировать текст вопроса:</p>
-                            <textarea type="text" class="form-control" rows="4">{{ questions[i]['question'] }}</textarea>
-                            <div class="d-flex flex-row mt-2">
-                                <button class="btn btn-info">Сохранить</button><button class="btn btn-danger ml-2">Убрать вопрос</button><button class="btn btn-danger ml-2">Убрать все вопросы этой трудовой функции</button>
+                            <textarea type="text" class="form-control" rows="4" style="resize: none">{{ questions[i]['question'] }}</textarea>
+                            <div class="d-flex flex-row mt-2 flex-wrap">
+                                <button class="btn btn-info mx-1 my-1" data-id="question{{ i }}" onclick="saveQuestion(this)">Сохранить</button>
+                                <button class="btn btn-danger mx-1 my-1" data-id="question{{ i }}" onclick="delQuestion(this)">Убрать вопрос</button>
+                                <button class="btn btn-danger mx-1 my-1" data-codeOTF="{{ questions[i]['codeTF'] }}" onclick="delTF(this)">Убрать ТФ</button>
                             </div>
                         </div>
                         %end
+                         <style>
+                                .btn.mx-1:first-child {
+                                    margin-left: 0 !important;
+                                }
+
+                                .btn.mx-1:last-child {
+                                    margin-right: 0 !important;
+                                }
+
+                                .blank-form {
+                                    width: 50%;
+                                }
+
+                                @media (min-width: 1025px) and (max-width: 1537px) {
+                                    .blank-form {
+                                        width: 75%;
+                                    }
+                                }
+
+                                @media screen and (max-width: 1025px) {
+                                    .blank-form {
+                                        width: 100%;
+                                    }
+                                }
+                            </style>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="sendQuestions()">Сохранить</button>
                 </form>
             </section>
         </article>
     </main>
 </body>
+<script type="text/javascript">
+    function saveQuestion(question) {
+        this.event.preventDefault();
 
+        let questionID = question.dataset["id"];
+        let currQuestion = document.querySelector(`#${questionID}`);
+        currQuestion.dataset["question"] = currQuestion.querySelector('textarea').value;
+        console.log(currQuestion.dataset["question"]);
+    }
+
+    function delQuestion(question) {
+        this.event.preventDefault();
+
+        let questionId = question.dataset["id"];
+        document.querySelector(`#${questionId}`).remove();
+    }
+
+    function delTF(tf) {
+        this.event.preventDefault();
+        console.log(tf);
+        let tfID = tf.dataset["codeotf"];
+        // del all questions of this OTF code
+        Array.from(document.querySelectorAll('.question')).map((question) => {
+            if (question.dataset["codeotf"] === tfID) {
+                question.remove();
+            }
+        })
+    }
+
+    function sendQuestions() {
+        event.preventDefault();
+
+        let questionData = Array.from(document.querySelectorAll('.question')).map((question) => { return JSON.stringify(question.dataset) });
+
+        console.log(questionData);
+
+        let url = '/admin/save_blank/{{ token }}';
+
+        fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer',
+            body: JSON.stringify(questionData)
+        }).then((result) => { console.log(result); });
+    }
+</script>
 </html>

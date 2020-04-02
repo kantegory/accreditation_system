@@ -83,7 +83,7 @@
 
                             function emailAdd(email) {
                                 document.querySelector('#emails').innerHTML += `
-                                    <div class="bg-info px-2 py-1 text-white text-center mx-2 my-2 rounded" id="${email}">${email}
+                                    <div class="bg-info px-2 py-1 text-white text-center mx-1 my-2 rounded" id="${email}">${email}
                                         <button type="button" class="close ml-2 text-white" onclick="emailDel(this)" data-email="${email}">&times;</button>
                                     </div>
                                 `;

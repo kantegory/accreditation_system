@@ -4,7 +4,7 @@ from utils.db_helper import create_blank
 from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     get_blank_id_by_token, add_new_users_answers, \
     get_blank_info_by_token, get_report_by_token, get_all_standards_by_token, \
-    get_all_users_by_token
+    get_all_users_by_token, mark_competences_as_used, get_competences_by_token
 import json
 from utils.config import *
 
@@ -54,6 +54,16 @@ def get_admin_blank_page(token):
     return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards)
 
 
+@route('/admin/save_blank/<token>', method="POST")
+@auth_basic(check)
+def save_blank(token):
+    questions = request.body.read().decode('utf-8')
+    questions = json.loads(questions)
+    questions = [json.loads(question) for question in questions]
+
+    mark_competences_as_used(questions, token)
+
+
 @route('/admin/report/<token>')
 @auth_basic(check)
 def get_admin_report_page(token):
@@ -65,7 +75,7 @@ def get_admin_report_page(token):
 
 @route('/quiz/<token>/<user_id>')
 def get_quiz_page(token, user_id):
-    questions = get_all_questions_by_token(token)
+    questions = get_competences_by_token(token)
     blank_info = get_blank_info_by_token(token)
     return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id, blank=blank_info)
 
@@ -88,4 +98,4 @@ def main(_host="localhost"):
 
 
 if __name__ == "__main__":
-    main('0.0.0.0')
+    main()
