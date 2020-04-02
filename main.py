@@ -4,9 +4,11 @@ from utils.db_helper import create_blank
 from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     get_blank_id_by_token, add_new_users_answers, \
     get_blank_info_by_token, get_report_by_token, get_all_standards_by_token, \
-    get_all_users_by_token, mark_competences_as_used, get_competences_by_token
+    get_all_users_by_token, mark_competences_as_used, get_competences_by_token, \
+    change_blank_state_by_token
 import json
 from utils.config import *
+from utils.notify import send_email
 
 
 def check(user, password):
@@ -64,6 +66,17 @@ def save_blank(token):
     mark_competences_as_used(questions, token)
 
 
+@route('/admin/send_email/<token>')
+@auth_basic(check)
+def send_notification(token):
+    recievers = get_all_users_by_token(token)
+
+    send_email(recievers, token)
+    change_blank_state_by_token("sent", token)
+
+    redirect('/admin/blank/{}'.format(token))
+
+
 @route('/admin/report/<token>')
 @auth_basic(check)
 def get_admin_report_page(token):
@@ -82,7 +95,6 @@ def get_quiz_page(token, user_id):
 
 @route('/quiz/<token>/<user_id>', method='POST')
 def write_new_user_answers(token, user_id):
-    # user_id = add_new_user(token)
     blank_id = get_blank_id_by_token(token)
 
     answers = request.body.read().decode('utf-8')

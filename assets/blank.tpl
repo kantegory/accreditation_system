@@ -31,6 +31,16 @@
         <article class="container-fluid bg-light">
             <section class="p-3">
                 <h2>{{ blank['name'] }}</h2>
+                <div class="blank-form my-2 mx-auto">
+                    <div class="form-group">
+                        Ссылка на анкету:  <input type="text" value="http://localhost:8080/quiz/{{ token }}" class="form-control w-50">
+                    </div>
+                    %if blank['state'] != 'sent':
+                        <button class="btn btn-primary" onclick="sendEmail()">Разослать уведомление</button>
+                    %else:
+                        <button class="btn btn-primary" disabled="">Уведомление отправлено</button>
+                    %end
+                </div>
                 <form class="blank-form m-auto">
                     <div class="form-group">
                         <label for="">Название:</label>
@@ -156,6 +166,14 @@
             referrer: 'no-referrer',
             body: JSON.stringify(questionData)
         }).then((result) => { console.log(result); });
+    }
+
+    function sendEmail() {
+        event.preventDefault();
+
+        let url = '/admin/send_email/{{ token }}';
+
+        window.location = url;
     }
 </script>
 </html>

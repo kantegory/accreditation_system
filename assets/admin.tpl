@@ -9,8 +9,8 @@
 </head>
 <style>
     .list-group-item-action, .custom-file-input {
-		cursor: pointer !important
-	}
+        cursor: pointer !important
+    }
 </style>
 
 <body>
@@ -31,7 +31,7 @@
         <article class="container-fluid bg-light" id="sections">
             <section id="create" class="p-3">
                 <h2>Создать анкету</h2>
-                <form action="/admin/new_blank" method="POST" class="w-50 m-auto" enctype="multipart/form-data">
+                <form action="/admin/new_blank" id="blankForm" method="POST" class="w-50 m-auto" enctype="multipart/form-data" onsubmit="sendForm()">
                     <div class="form-group">
                         <label for="">Название:</label>
                         <input type="text" class="form-control" placeholder="Название..." name="blank_name">
@@ -110,6 +110,16 @@
                                     emails.map((email) => { emailAdd(email) });
                                 }
                             })
+
+                            function sendForm() {
+                                // cancel form submitting
+                                this.event.preventDefault();
+
+                                document.querySelector('#putEmail').value = emails.join();
+
+                                // submit the form
+                                document.querySelector('#blankForm').submit();
+                            }
                         </script>
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить на модерацию</button>
@@ -122,19 +132,19 @@
                     <a href="admin/blank/{{ moderatingBlank['token'] }}" class="list-group-item list-group-item-action">{{ moderatingBlank['name'] }}</a>
                     <div class="d-flex flex-row">
                         <small class="text-muted ml-2">Используемые профстандарты:
-                        %for standard in standards:
+                            %for standard in standards:
                             %if moderatingBlank['token'] == standard['token']:
-                                %for i in range(len(standard['standards'])):
-                                    %prof = standard['standards'][i]
-                                    %if i == len(standard['standards']) - 1:
-                                        {{ prof }}.
-                                    %else:
-                                        {{ prof }},
-                                    %end
-                                %end
-                             %end
-                         %end
-                         </small>
+                            %for i in range(len(standard['standards'])):
+                            %prof = standard['standards'][i]
+                            %if i == len(standard['standards']) - 1:
+                            {{ prof }}.
+                            %else:
+                            {{ prof }},
+                            %end
+                            %end
+                            %end
+                            %end
+                        </small>
                     </div>
                     %end
                 </div>
@@ -146,18 +156,18 @@
                     <a href="admin/blank/{{ blank['token'] }}" class="list-group-item list-group-item-action">{{ blank['name'] }}</a>
                     <div class="d-flex flex-row">
                         <small class="text-muted ml-2">Используемые профстандарты:
-                        %for standard in standards:
+                            %for standard in standards:
                             %if blank['token'] == standard['token']:
-                                %for i in range(len(standard['standards'])):
-                                    %prof = standard['standards'][i]
-                                    %if i == len(standard['standards']) - 1:
-                                        {{ prof }}.
-                                    %else:
-                                        {{ prof }},
-                                    %end
-                                %end
-                             %end
-                         %end
+                            %for i in range(len(standard['standards'])):
+                            %prof = standard['standards'][i]
+                            %if i == len(standard['standards']) - 1:
+                            {{ prof }}.
+                            %else:
+                            {{ prof }},
+                            %end
+                            %end
+                            %end
+                            %end
                         </small>
                     </div>
                     %end
@@ -167,7 +177,7 @@
                 <h2>Отчёты</h2>
                 <div class="list-group w-50 m-auto">
                     %for blank in blanks:
-                        <a href="/admin/report/{{ blank['token'] }}" class="list-group-item list-group-item-action">Отчёт по анкете {{ blank['name'] }}</a>
+                    <a href="/admin/report/{{ blank['token'] }}" class="list-group-item list-group-item-action">Отчёт по анкете {{ blank['name'] }}</a>
                     %end
                 </div>
             </section>
@@ -181,15 +191,15 @@
         if (action === "add") {
             fileAmounts++;
             document.querySelector('#fileInputs').innerHTML += `
-				<div class="custom-file mt-2" id="fileInput` + fileAmounts + `">
+                <div class="custom-file mt-2" id="fileInput` + fileAmounts + `">
                     <input type="file" class="custom-file-input" required name="fileInput` + fileAmounts + `" onchange="updateLabel(this.value, this.name)">
                     <label class="custom-file-label">Выберите XML-файл...</label>
                 </div>
-        	`;
+            `;
             if (fileAmounts < 3) {
                 document.querySelector('#fileBtns').innerHTML += `
-                	<button class="btn btn-danger ml-2" onclick="editFileAmount('del')" id="delFile">Удалить</button>
-        		`
+                    <button class="btn btn-danger ml-2" onclick="editFileAmount('del')" id="delFile">Удалить</button>
+                `
             } else if (fileAmounts === 5) {
                 document.querySelector('#addFile').remove();
                 document.querySelector('#delFile').classList.remove('ml-2')
@@ -202,8 +212,8 @@
             } else if (fileAmounts === 4) {
                 document.querySelector('#fileBtns').innerHTML = `
                     <button class="btn btn-primary" onclick="editFileAmount('add')" id="addFile">Добавить ещё</button>
-                	<button class="btn btn-danger ml-2" onclick="editFileAmount('del')" id="delFile">Удалить</button>
-        		`
+                    <button class="btn btn-danger ml-2" onclick="editFileAmount('del')" id="delFile">Удалить</button>
+                `
             }
         }
     }

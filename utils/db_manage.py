@@ -541,3 +541,11 @@ def get_competences_by_token(token):
     questions = get_all_questions_for_competences(competences)
 
     return questions
+
+
+def change_blank_state_by_token(state, token):
+
+    s = session()
+
+    s.query(Blanks).filter(Blanks.token == token).update({"state": state})
+    s.commit()
