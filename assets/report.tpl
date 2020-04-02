@@ -32,7 +32,7 @@
             <section class="p-3">
                 <h2>Отчёт по анкете {{ blank['name'] }}</h2>
                 <table class="table">
-                    <thead>
+                    <!-- <thead>
                         <tr>
                             <th scope="row">Номер вопроса</th>
                             <td>E-mail выпускника</td>
@@ -53,6 +53,22 @@
                             <td>{{ reports[i]['questionType'] }}</td>
                             <td>{{ reports[i]['registrationNumber']}}</td>
                             <td>{{ reports[i]['answer'] }}</td>
+                        </tr>
+                        %end
+                    </tbody> -->
+                    <thead>
+                        <tr>
+                            <th scope="row">#</th>
+                            <td>E-mail выпускника</td>
+                            <td>Процент отвеченного</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        %for user in user_stat:
+                        <tr>
+                            <th scope="row">{{ i }}</th>
+                            <td>{{ user['user_email'] }}</td>
+                            <td>{{ user['stat'] }}%</td>
                         </tr>
                         %end
                     </tbody>

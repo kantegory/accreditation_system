@@ -5,7 +5,7 @@ from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     get_blank_id_by_token, add_new_users_answers, \
     get_blank_info_by_token, get_report_by_token, get_all_standards_by_token, \
     get_all_users_by_token, mark_competences_as_used, get_competences_by_token, \
-    change_blank_state_by_token
+    change_blank_state_by_token, get_user_answers_by_user_id
 import json
 from utils.config import *
 from utils.notify import send_email
@@ -83,12 +83,24 @@ def get_admin_report_page(token):
     reports = get_report_by_token(token)
     blank = get_blank_info_by_token(token)
     users = get_all_users_by_token(token)
-    return template('assets/report.tpl', reports=reports, blank=blank, users=users)
+
+    questions_amount = len(get_competences_by_token(token))
+    user_stat = [
+        {
+            'user_id': user['user_id'],
+            'user_email': user['user_email'],
+            'stat': int(len(get_user_answers_by_user_id(user['user_id'])) / questions_amount * 100)
+        }
+        for user in users
+    ]
+
+    return template('assets/report.tpl', reports=reports, blank=blank, users=users, user_stat=user_stat)
 
 
 @route('/quiz/<token>/<user_id>')
 def get_quiz_page(token, user_id):
     questions = get_competences_by_token(token)
+    print(questions)
     blank_info = get_blank_info_by_token(token)
     return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id, blank=blank_info)
 
