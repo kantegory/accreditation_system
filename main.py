@@ -54,7 +54,8 @@ def get_admin_blank_page(token):
     questions = get_all_questions_by_token(token)
     standards = get_all_standards_by_token(token)
     hostname = CONFIG["HOSTNAME"]
-    return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards, hostname=hostname)
+    port = CONFIG["PORT"]
+    return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards, hostname=hostname, port=port)
 
 
 @route('/admin/save_blank/<token>', method="POST")
@@ -119,7 +120,7 @@ def write_new_user_answers(token, user_id):
 
 def main(_host="localhost"):
     app = bottle.app()
-    bottle.run(app=app, host=_host, port=8080)
+    bottle.run(app=app, host=_host, port=CONFIG["PORT"])
 
 
 if __name__ == "__main__":

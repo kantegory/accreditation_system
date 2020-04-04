@@ -1,11 +1,20 @@
 # you should write configuration info
+# 'NOTIFY_EMAIL': email address for sender in notify.py
+# 'NOTIFY_PASSWORD': email password for sender in notify.py
+# 'NOTIFY_SMTP_HOST': SMTP-server address
+# 'NOTIFY_SMTP_PORT': SMTP-server port
+# 'ADMIN_LOGIN': admin login for /admin pages
+# 'ADMIN_PASSWORD': admin password
+# 'HOSTNAME': hostname of your server, without "/"
+# 'PORT': port of your server
 
 CONFIG = {
     'NOTIFY_EMAIL': 'email@example.com',
     'NOTIFY_PASSWORD': 'password',
     'NOTIFY_SMTP_HOST': 'smtp.mail.ru',
-    'NOTIFY_SMTP_PORT': 465, 
+    'NOTIFY_SMTP_PORT': 465,
     'ADMIN_LOGIN': 'admin',
     'ADMIN_PASSWORD': 'password',
-    'HOSTNAME': 'localhost:8080'
+    'HOSTNAME': 'localhost',
+    'PORT': 8080
 }
