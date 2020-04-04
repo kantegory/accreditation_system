@@ -8,17 +8,26 @@ git clone https://github.com/kantegory/accreditation_system.git
 
 2. Install requirements
 ```bash
-pip3 install -r requierments.txt
+make init
 ```
 
-3. Launch main.py
+3. Configure system
+```bash
+make config
+```
+
+3. Launch main.py for checking
 ```bash
 python3 main.py
+```
+
+4. If everything is OK, you can launch system as a service by following command:
+```bash
+make service 
 ```
 
 Now accreditation system is avaliable on http://hostname:8080/
 
 Admin-panel: http://hostname:8080/admin  
-You can configure login and password for admin-panel in main.py (def check()).  
 
 Quiz for graduates: http://hostname:8080/quiz/token/id
