@@ -33,7 +33,7 @@
                 <h2>{{ blank['name'] }}</h2>
                 <div class="blank-form my-2 mx-auto">
                     <div class="form-group">
-                        Ссылка на анкету:  <input type="text" value="http://localhost:8080/quiz/{{ token }}" class="form-control w-50">
+                        Ссылка на анкету:  <input type="text" value="{{ hostname }}/quiz/{{ token }}" class="form-control w-50">
                     </div>
                     %if blank['state'] != 'sent':
                         <button class="btn btn-primary" onclick="sendEmail()">Разослать уведомление</button>

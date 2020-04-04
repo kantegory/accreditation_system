@@ -12,7 +12,7 @@ from utils.notify import send_email
 
 
 def check(user, password):
-    return user == CONFIG["ADMIN"] and password == CONFIG["ADMIN_PASSWORD"]
+    return user == CONFIG["ADMIN_LOGIN"] and password == CONFIG["ADMIN_PASSWORD"]
 
 
 @route('/admin')
@@ -53,7 +53,8 @@ def get_admin_blank_page(token):
     blank = get_blank_info_by_token(token)
     questions = get_all_questions_by_token(token)
     standards = get_all_standards_by_token(token)
-    return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards)
+    hostname = CONFIG["HOSTNAME"]
+    return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards, hostname=hostname)
 
 
 @route('/admin/save_blank/<token>', method="POST")
@@ -122,4 +123,4 @@ def main(_host="localhost"):
 
 
 if __name__ == "__main__":
-    main()
+    main(CONFIG["HOSTNAME"])
