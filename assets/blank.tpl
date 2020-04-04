@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Админ-панель | Редактирование {{ blank['name'] }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <style>
     .list-group-item-action {
@@ -110,11 +113,29 @@
                                 }
                             </style>
                     </div>
-                    <button type="submit" class="btn btn-primary" onclick="sendQuestions()">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="sendQuestions()" data-toggle="modal" data-target="#success">Сохранить</button>
                 </form>
             </section>
         </article>
     </main>
+    <div class="modal" tabindex="-1" role="dialog" id="success">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Анкета сохранена</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Анкета успешно сохранена!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
     function saveQuestion(question) {
@@ -166,6 +187,7 @@
             referrer: 'no-referrer',
             body: JSON.stringify(questionData)
         }).then((result) => { console.log(result); });
+
     }
 
     function sendEmail() {
