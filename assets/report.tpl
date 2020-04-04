@@ -32,30 +32,6 @@
             <section class="p-3">
                 <h2>Отчёт по анкете {{ blank['name'] }}</h2>
                 <table class="table">
-                    <!-- <thead>
-                        <tr>
-                            <th scope="row">Номер вопроса</th>
-                            <td>E-mail выпускника</td>
-                            <td>Тип вопроса</td>
-                            <td>Проф. стандарт</td>
-                            <td>Ответ</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        %for i in range(len(reports)):
-                        <tr>
-                            <th scope="row">{{ i }}</th>
-                            %for user in users:
-                                %if reports[i]['userId'] == user['user_id']:
-                                    <td>{{ user['user_email'] }}</td>
-                                %end
-                            %end
-                            <td>{{ reports[i]['questionType'] }}</td>
-                            <td>{{ reports[i]['registrationNumber']}}</td>
-                            <td>{{ reports[i]['answer'] }}</td>
-                        </tr>
-                        %end
-                    </tbody> -->
                     <thead>
                         <tr>
                             <th scope="row">#</th>
@@ -66,7 +42,7 @@
                     <tbody>
                         %for user in user_stat:
                         <tr>
-                            <th scope="row">{{ i }}</th>
+                            <th scope="row">{{ user_stat.index(user) + 1 }}</th>
                             <td>{{ user['user_email'] }}</td>
                             <td>{{ user['stat'] }}%</td>
                         </tr>
