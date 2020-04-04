@@ -1,6 +1,11 @@
+# you should write configuration info
+
 CONFIG = {
-    'EMAIL': 'email',
-    'PASSWORD': 'password',
-    'ADMIN': 'admin',
-    'ADMIN_PASSWORD': 'password'
+    'NOTIFY_EMAIL': 'email@example.com',
+    'NOTIFY_PASSWORD': 'password',
+    'NOTIFY_SMTP_HOST': 'smtp.mail.ru',
+    'NOTIFY_SMTP_PORT': 465, 
+    'ADMIN_LOGIN': 'admin',
+    'ADMIN_PASSWORD': 'password',
+    'HOSTNAME': 'localhost:8080'
 }

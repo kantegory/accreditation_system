@@ -59,7 +59,7 @@
                             <small>Введите все почтовые адреса, владельцы которых должны получить доступ к этой анкете, через пробел</small>
                         </div>
                         <div class="d-flex flex-row flex-wrap" id="emails"></div>
-                        <input type="email" class="form-control" placeholder="johndoe@gmail.com" name="emails" rows="2" id="putEmail" required>
+                        <input type="email" class="form-control" placeholder="johndoe@gmail.com" name="emails" rows="2" id="putEmail">
                         <script>
                             function validateEmail(email) {
                                 let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -115,10 +115,15 @@
                                 // cancel form submitting
                                 this.event.preventDefault();
 
-                                document.querySelector('#putEmail').value = emails.join();
+                                if (emails.length !== 0) {
+                                    document.querySelector('#putEmail').value = emails.join();
+                                    localStorage.removeItem('emails');
 
-                                // submit the form
-                                document.querySelector('#blankForm').submit();
+                                    // submit the form
+                                    document.querySelector('#blankForm').submit();
+                                } else {
+                                    document.querySelector('#putEmail').setCustomValidity('Вы не ввели ни одного почтового адреса');
+                                }
                             }
                         </script>
                     </div>
