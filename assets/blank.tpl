@@ -45,10 +45,6 @@
                     %end
                 </div>
                 <form class="blank-form m-auto">
-                    <div class="form-group">
-                        <label for="">Название:</label>
-                        <input type="text" class="form-control" placeholder="Название..." value="{{ blank['name'] }}">
-                    </div>
                     <div class="d-flex flex-row">
                         <small class="text-muted ml-2">Используемые профстандарты:
                         %for i in range(len(standards)):
