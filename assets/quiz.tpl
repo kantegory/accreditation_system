@@ -23,35 +23,54 @@
     <main class="d-flex flex-row p-3 bg-light">
         <section class="container-fluid">
             <h2>{{ blank['name'] }}</h2>
+            %if state == "unfinished":
             <form class="w-50 m-auto">
+                <fieldset class="w-100 mt-2" id="question0" data-questionType="job" data-answer="" data-question="Стаж вашей работы по специальности" data-registrationNumber="0">
+                    <legend>Стаж вашей работы по специальности</legend>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="questions3_0" name="question0" class="custom-control-input" value="3" onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions3_0">Не работал по специальности</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="questions2_0" name="question0" class="custom-control-input" value="2" onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions2_0">0-2 лет</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="questions1_0" name="question0" class="custom-control-input" value="1" required onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions1_0">Более 2 лет</label>
+                    </div>
+                </fieldset>
                 %for i in range(len(questions)):
-                <fieldset class="w-100 mt-2" id="question{{ i }}" data-questionType="{{ questions[i]['questionType'] }}" data-registrationNumber="{{ questions[i]['standardRegistrationNumber'] }}" data-answer="" data-codeOTF="{{ questions[i]['codeTF'] }}" data-question="{{ questions[i]['question'] }}">
+                <fieldset class="w-100 mt-2 question" id="question{{ i + 1 }}" data-questionType="{{ questions[i]['questionType'] }}" data-registrationNumber="{{ questions[i]['standardRegistrationNumber'] }}" data-answer="" data-codeOTF="{{ questions[i]['codeTF'] }}" data-question="{{ questions[i]['question'] }}">
                     <legend>Выберите наиболее подходящее утверждение для следующей компетенции:</legend>
                     <p>{{ questions[i]['question'] }}</p>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="questions5_{{ i }}" name="question{{ i }}" class="custom-control-input" value="5" onclick="writeAnswer(this.id)" required="">
-                        <label class="custom-control-label" for="questions5_{{ i }}">Освоил в образовательной организации и соответствует требованиям работодателя</label>
+                        <input type="radio" id="questions5_{{ i + 1 }}" name="question{{ i + 1 }}" class="custom-control-input" value="5" onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions5_{{ i + 1 }}">Освоил в образовательной организации и соответствует требованиям работодателя</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="questions4_{{ i }}" name="question{{ i }}" class="custom-control-input" value="4" onclick="writeAnswer(this.id)" required="">
-                        <label class="custom-control-label" for="questions4_{{ i }}">Частично освоил в образовательной организации и соответствует требованиям работодателя</label>
+                        <input type="radio" id="questions4_{{ i + 1 }}" name="question{{ i + 1 }}" class="custom-control-input" value="4" onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions4_{{ i + 1 }}">Частично освоил в образовательной организации и соответствует требованиям работодателя</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="questions3_{{ i }}" name="question{{ i }}" class="custom-control-input" value="3" onclick="writeAnswer(this.id)" required="">
-                        <label class="custom-control-label" for="questions3_{{ i }}">Освоил в образовательной организации, но не востребовано на рабочем месте</label>
+                        <input type="radio" id="questions3_{{ i + 1 }}" name="question{{ i + 1 }}" class="custom-control-input" value="3" onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions3_{{ i + 1 }}">Освоил в образовательной организации, но не востребовано на рабочем месте</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="questions2_{{ i }}" name="question{{ i }}" class="custom-control-input" value="2" onclick="writeAnswer(this.id)" required="">
-                        <label class="custom-control-label" for="questions2_{{ i }}">Частично освоил в образовательной организации, но не востребовано на рабочем месте</label>
+                        <input type="radio" id="questions2_{{ i + 1 }}" name="question{{ i + 1 }}" class="custom-control-input" value="2" onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions2_{{ i + 1 }}">Частично освоил в образовательной организации, но не востребовано на рабочем месте</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="questions1_{{ i }}" name="question{{ i }}" class="custom-control-input" value="1" required onclick="writeAnswer(this.id)" required="">
-                        <label class="custom-control-label" for="questions1_{{ i }}">Не было в программе образовательной организации, но востребовано на рабочем месте</label>
+                        <input type="radio" id="questions1_{{ i + 1 }}" name="question{{ i + 1 }}" class="custom-control-input" value="1" required onclick="writeAnswer(this.id)" required="">
+                        <label class="custom-control-label" for="questions1_{{ i + 1 }}">Не было в программе образовательной организации, но востребовано на рабочем месте</label>
                     </div>
                 </fieldset>
                 %end
-                <button class="btn btn-primary mt-2" onclick="sendResults()" data-toggle="modal" data-target="#success">Отправить</button>
+                <button class="btn btn-primary mt-2" onclick="success()" data-toggle="modal" data-target="#success">Отправить</button>
             </form>
+            %else:
+            <h2 class="w-100 text-center">Вы уже прошли анкету</h2>
+            %end
         </section>
     </main>
     <div class="modal" tabindex="-1" role="dialog" id="success">
@@ -73,47 +92,16 @@
         </div>
     </div>
     <script type="text/javascript">
-    function sendResults() {
-        event.preventDefault();
-
-        let questionData = [];
-
-        % for i in range(len(questions)):
-            questionData.push(JSON.stringify(document.querySelector('#question{{ i }}').dataset));
-        % end
-
-        let url = '/quiz/{{ token }}/{{ user_id }}';
-
-        fetch(url, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrer: 'no-referrer',
-            body: JSON.stringify(questionData)
-        }).then((result) => { console.log(result); window.location = "http://aorpo.spb.ru/"; });
-    };
-
-    let questionTmpId = 0;
-
     function writeAnswer(id) {
         let currID = parseInt(id.split('_')[1]);
         let fieldsetID = 'question' + currID;
 
         document.querySelector('#' + fieldsetID).dataset.answer = document.querySelector('#' + id).value;
 
-        if (currID - questionTmpId === 1) {
-            saveResults(questionTmpId);
-            questionTmpId = currID;
-        }
+        saveResults(currID);
     };
 
     function saveResults(id) {
-        console.log(id)
         let questionData = [];
         let dataset = document.querySelector('#question' + id).dataset;
 
@@ -148,6 +136,14 @@
             }
         }
     });
+
+    function success(event) {
+        event.preventDefault();
+
+        localStorage.clear();
+
+        window.location.href = "http://aorpo.spb.ru"
+    }
     </script>
 </body>
 

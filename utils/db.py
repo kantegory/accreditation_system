@@ -14,6 +14,7 @@ class Users(Base):
     id = Column(Integer, primary_key=True)
     token = Column(String)
     email = Column(String)
+    state = Column(String)
 
 
 class Admin(Base):

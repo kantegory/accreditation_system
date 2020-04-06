@@ -5,7 +5,8 @@ from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
     get_blank_id_by_token, add_new_users_answers, \
     get_blank_info_by_token, get_report_by_token, get_all_standards_by_token, \
     get_all_users_by_token, mark_competences_as_used, get_competences_by_token, \
-    change_blank_state_by_token, get_user_answers_by_user_id
+    change_blank_state_by_token, get_user_answers_by_user_id, \
+    change_user_state_by_user_id, get_user_state_by_user_id
 import json
 from utils.config import *
 from utils.notify import send_email
@@ -50,11 +51,14 @@ def create_new_blank():
 @route('/admin/blank/<token>')
 @auth_basic(check)
 def get_admin_blank_page(token):
+
     blank = get_blank_info_by_token(token)
     questions = get_all_questions_by_token(token)
     standards = get_all_standards_by_token(token)
+    
     hostname = CONFIG["HOSTNAME"]
     port = CONFIG["PORT"]
+    
     return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards, hostname=hostname, port=port)
 
 
@@ -102,9 +106,11 @@ def get_admin_report_page(token):
 @route('/quiz/<token>/<user_id>')
 def get_quiz_page(token, user_id):
     questions = get_competences_by_token(token)
-    print(questions)
     blank_info = get_blank_info_by_token(token)
-    return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id, blank=blank_info)
+
+    state = get_user_state_by_user_id(user_id)
+
+    return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id, blank=blank_info, state=state)
 
 
 @route('/quiz/<token>/<user_id>', method='POST')
@@ -116,6 +122,14 @@ def write_new_user_answers(token, user_id):
     answers = [json.loads(answer) for answer in answers]
 
     add_new_users_answers(answers, blank_id, user_id)
+
+    questions_amount = len(get_competences_by_token(token))
+    user_answers_amount = len(get_user_answers_by_user_id(user_id))
+    stat = user_answers_amount // questions_amount
+
+    if stat == 1:
+        change_user_state_by_user_id("finished", user_id)
+
 
 
 def main(_host="localhost"):
