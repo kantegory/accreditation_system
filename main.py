@@ -10,6 +10,7 @@ from utils.db_manage import get_all_blanks, get_all_questions_by_token, \
 import json
 from utils.config import *
 from utils.notify import send_email
+from utils.analysis import get_analysis_by_blank_id
 
 
 def check(user, password):
@@ -88,6 +89,7 @@ def send_notification(token):
 def get_admin_report_page(token):
     reports = get_report_by_token(token)
     blank = get_blank_info_by_token(token)
+    blank_id = blank["id"]
     users = get_all_users_by_token(token)
 
     questions_amount = len(get_competences_by_token(token))
@@ -100,7 +102,9 @@ def get_admin_report_page(token):
         for user in users
     ]
 
-    return template('assets/report.tpl', reports=reports, blank=blank, users=users, user_stat=user_stat)
+    analysis = get_analysis_by_blank_id(blank_id)
+
+    return template('assets/report.tpl', reports=reports, blank=blank, users=users, user_stat=user_stat, analysis=analysis)
 
 
 @route('/quiz/<token>/<user_id>')
