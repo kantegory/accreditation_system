@@ -21,10 +21,10 @@
         <aside class="w-25 border border-light bg-light overflow-auto">
             <nav id="" class="navbar navbar-light p-3">
                 <div class="list-group w-100 m-auto" id="navLinks">
-                    <a data-id="#create" class="list-group-item list-group-item-action active text-white" onclick="goTo(this)">Создать анкету</a>
-                    <a data-id="#moderate" class="list-group-item list-group-item-action" onclick="goTo(this)">Анкеты на модерации</a>
-                    <a data-id="#all" class="list-group-item list-group-item-action" onclick="goTo(this)">Все анкеты</a>
-                    <a data-id="#reports" class="list-group-item list-group-item-action" onclick="goTo(this)">Посмотреть отчёты</a>
+                    <a data-id="create" class="list-group-item list-group-item-action active text-white" onclick="goTo(this.dataset['id'])">Создать анкету</a>
+                    <a data-id="moderate" class="list-group-item list-group-item-action" onclick="goTo(this.dataset['id'])">Анкеты на модерации</a>
+                    <a data-id="all" class="list-group-item list-group-item-action" onclick="goTo(this.dataset['id'])">Все анкеты</a>
+                    <a data-id="reports" class="list-group-item list-group-item-action" onclick="goTo(this.dataset['id'])">Посмотреть отчёты</a>
                 </div>
             </nav>
         </aside>
@@ -97,7 +97,7 @@
                             function emailDel(btn) {
                                 event.preventDefault();
                                 let id = btn.dataset["email"];
-                                document.getElementById(`${id}`).remove();
+                                document.querySelector(`#${id}`).remove();
 
                                 emails.splice(emails.indexOf(id), 1);
                                 localStorage.emails = JSON.stringify(emails);
@@ -109,6 +109,11 @@
                                 if (emails.length > 0) {
                                     emails.map((email) => { emailAdd(email) });
                                 }
+
+                                let curr_state = window.location.href;
+                                let page_state = curr_state.includes('#') ? curr_state.split('#')[1] : "create";
+
+                                goTo(page_state);
                             })
 
                             function sendForm() {
@@ -133,56 +138,68 @@
             <section id="moderate" class="p-3 d-none">
                 <h2>Анкеты на модерации</h2>
                 <div class="list-group w-50 m-auto">
-                    %for moderatingBlank in moderatingBlanks:
-                    <a href="admin/blank/{{ moderatingBlank['token'] }}" class="list-group-item list-group-item-action">{{ moderatingBlank['name'] }}</a>
-                    <div class="d-flex flex-row">
-                        <small class="text-muted ml-2">Используемые профстандарты:
-                            %for standard in standards:
-                            %if moderatingBlank['token'] == standard['token']:
-                            %for i in range(len(standard['standards'])):
-                            %prof = standard['standards'][i]
-                            %if i == len(standard['standards']) - 1:
-                            {{ prof }}.
-                            %else:
-                            {{ prof }},
-                            %end
-                            %end
-                            %end
-                            %end
-                        </small>
-                    </div>
+                    %if len(moderatingBlanks) > 0:
+                        %for moderatingBlank in moderatingBlanks:
+                        <a href="admin/blank/{{ moderatingBlank['token'] }}" class="list-group-item list-group-item-action">{{ moderatingBlank['name'] }}</a>
+                        <div class="d-flex flex-row">
+                            <small class="text-muted ml-2">Используемые профстандарты:
+                                %for standard in standards:
+                                    %if moderatingBlank['token'] == standard['token']:
+                                        %for i in range(len(standard['standards'])):
+                                            %prof = standard['standards'][i]
+                                            %if i == len(standard['standards']) - 1:
+                                                {{ prof }}.
+                                            %else:
+                                                {{ prof }},
+                                            %end
+                                        %end
+                                    %end
+                                %end
+                            </small>
+                        </div>
+                        %end
+                    %else:
+                        <h3 class="text-center w-100 text-secondary">Здесь пока ничего нет...</h3>
                     %end
                 </div>
             </section>
             <section id="all" class="p-3 d-none">
                 <h2>Все анкеты</h2>
                 <div class="list-group w-50 m-auto">
-                    %for blank in blanks:
-                    <a href="admin/blank/{{ blank['token'] }}" class="list-group-item list-group-item-action">{{ blank['name'] }}</a>
-                    <div class="d-flex flex-row">
-                        <small class="text-muted ml-2">Используемые профстандарты:
-                            %for standard in standards:
-                            %if blank['token'] == standard['token']:
-                            %for i in range(len(standard['standards'])):
-                            %prof = standard['standards'][i]
-                            %if i == len(standard['standards']) - 1:
-                            {{ prof }}.
-                            %else:
-                            {{ prof }},
-                            %end
-                            %end
-                            %end
-                            %end
-                        </small>
-                    </div>
+                    %if len(blanks) > 0:
+                        %for blank in blanks:
+                        <a href="admin/blank/{{ blank['token'] }}" class="list-group-item list-group-item-action">{{ blank['name'] }}</a>
+                        <div class="d-flex flex-row">
+                            <small class="text-muted ml-2">Используемые профстандарты:
+                                %for standard in standards:
+                                    %if blank['token'] == standard['token']:
+                                        %for i in range(len(standard['standards'])):
+                                            %prof = standard['standards'][i]
+                                            %if i == len(standard['standards']) - 1:
+                                                {{ prof }}.
+                                            %else:
+                                                {{ prof }},
+                                            %end
+                                        %end
+                                    %end
+                                %end
+                            </small>
+                        </div>
+                        %end
+                    %else:
+                        <h3 class="text-center w-100 text-secondary">Здесь пока ничего нет...</h3>
                     %end
                 </div>
             </section>
             <section id="reports" class="p-3 d-none">
                 <h2>Отчёты</h2>
                 <div class="list-group w-50 m-auto">
-                    %for blank in blanks:
-                    <a href="/admin/report/{{ blank['token'] }}" class="list-group-item list-group-item-action">Отчёт по анкете {{ blank['name'] }}</a>
+                    %if len(blanks) > 0:
+                        %for blank in blanks:
+                            <a href="/admin/report/{{ blank['token'] }}" class="list-group-item list-group-item-action">Отчёт по анкете {{ blank['name'] }}</a>
+                        %end
+                    %else:
+                        <h3 class="text-center w-100 text-secondary">Здесь пока ничего нет...</h3>
                     %end
                 </div>
             </section>
@@ -223,12 +240,22 @@
         }
     }
 
-    function goTo(elem) {
-        let id = elem.dataset.id;
-        Array.from(document.querySelector('#navLinks').querySelectorAll('a')).map((elem) => { elem.classList.remove('active', 'text-white') });
-        elem.classList.add('active', 'text-white');
+    function goTo(id) {
+        let innerId = `#${id}`;
+
+        Array.from(document.querySelector('#navLinks').querySelectorAll('a')).map((elem) => { 
+            if (elem.dataset["id"] !== id) {
+                elem.classList.remove('active', 'text-white')
+            } else {
+                elem.classList.add('active', 'text-white')
+            }
+        });
+
+        // push the page state
+        history.pushState(innerId, innerId, innerId);
+
         Array.from(document.querySelectorAll('#sections section')).map((elem) => { elem.classList.add('d-none') });
-        document.querySelector(id).classList.remove('d-none');
+        document.querySelector(innerId).classList.remove('d-none');
     }
 
     // add listeners for custom-file-input labels changing to values

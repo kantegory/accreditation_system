@@ -21,10 +21,10 @@
         <aside class="w-25 border border-light bg-light overflow-auto">
             <nav id="" class="navbar navbar-light p-3">
                 <div class="list-group w-100 m-auto">
-                    <a href="/admin" class="list-group-item list-group-item-action">Создать анкету</a>
-                    <a href="/admin" class="list-group-item list-group-item-action">Анкеты на модерации</a>
-                    <a href="/admin" class="list-group-item list-group-item-action">Все анкеты</a>
-                    <a href="/admin" class="list-group-item list-group-item-action active">Посмотреть отчёты</a>
+                    <a href="/admin#create" class="list-group-item list-group-item-action">Создать анкету</a>
+                    <a href="/admin#moderate" class="list-group-item list-group-item-action">Анкеты на модерации</a>
+                    <a href="/admin#all" class="list-group-item list-group-item-action">Все анкеты</a>
+                    <a href="/admin#reports" class="list-group-item list-group-item-action active">Посмотреть отчёты</a>
                 </div>
             </nav>
         </aside>
