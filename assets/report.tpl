@@ -30,25 +30,31 @@
         </aside>
         <article class="container-fluid bg-light">
             <section class="p-3">
-                <h2>Отчёт по анкете {{ blank['name'] }}</h2>
+                <div class="d-flex flex-row">
+                    <h2>Отчёт по анкете {{ blank['name'] }}</h2>
+                    <button class="btn btn-primary ml-auto">Скачать полный отчёт</button>
+                </div>
+                <h4>Процесс:</h4>
                 <table class="table">
                     <thead>
                         <tr>
                             <th scope="row">#</th>
-                            <td>E-mail выпускника</td>
-                            <td>Процент отвеченного</td>
+                            <th>E-mail выпускника</th>
+                            <th>Процент отвеченного</th>
                         </tr>
                     </thead>
                     <tbody>
                         %for user in user_stat:
                         <tr>
-                            <th scope="row">{{ user_stat.index(user) + 1 }}</th>
+                            <td scope="row">{{ user_stat.index(user) + 1 }}</td>
                             <td>{{ user['user_email'] }}</td>
                             <td>{{ user['stat'] }}%</td>
                         </tr>
                         %end
                     </tbody>
                 </table>
+                <h4>Анализ:</h4>
+                {{ analysis }}
             </section>
         </article>
     </main>

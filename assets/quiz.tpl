@@ -22,10 +22,13 @@
     </header>
     <main class="d-flex flex-row p-3 bg-light">
         <section class="container-fluid">
-            <h2>{{ blank['name'] }}</h2>
+            <div class="d-flex flex-row">
+                <h2>{{ blank['name'] }}</h2>
+                <span class="ml-auto text-secondary">Все вопросы сохраняются автоматически</span>
+            </div>
             %if state == "unfinished":
             <form class="w-50 m-auto">
-                <fieldset class="w-100 mt-2" id="question0" data-questionType="job" data-answer="" data-question="Стаж вашей работы по специальности" data-registrationNumber="0">
+                <fieldset class="w-100 mt-2" id="question0" data-questionType="job" data-answer="" data-question="Стаж вашей работы по специальности" data-registrationNumber="0" data-codeOTF="0">
                     <legend>Стаж вашей работы по специальности</legend>
                     <div class="custom-control custom-radio">
                         <input type="radio" id="questions3_0" name="question0" class="custom-control-input" value="3" onclick="writeAnswer(this.id)" required="">
@@ -102,10 +105,9 @@
     };
 
     function saveResults(id) {
-        let questionData = [];
-        let dataset = document.querySelector('#question' + id).dataset;
+        let dataset = [JSON.stringify(document.querySelector('#question' + id).dataset)];
 
-        questionData.push(JSON.stringify(dataset));
+        console.log("dataset", dataset);
 
         let url = '/quiz/{{ token }}/{{ user_id }}';
 
@@ -119,7 +121,7 @@
             },
             redirect: 'follow', // manual, *follow, error
             referrer: 'no-referrer',
-            body: JSON.stringify(questionData)
+            body: JSON.stringify(dataset)
         }).then((result) => { console.log(result) })
 
         let questionID = '#question' + id;

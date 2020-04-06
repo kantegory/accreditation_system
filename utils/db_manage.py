@@ -1,6 +1,7 @@
 from .db import GeneralizedWorkFunction, RequiredSkills, LaborActions, NecessaryKnowledges, \
     Blanks, BlankStandards, Users, UserAnswers, session, Competences
 from hashlib import md5
+from sqlalchemy import and_
 
 
 def get_token(data):
@@ -352,10 +353,11 @@ def get_blank_id_by_token(token):
 def get_blank_info_by_token(token):
     s = session()
 
-    blanks = s.query(Blanks).filter(Blanks.token == token).all()
+    blanks = s.query(Blanks).filter(Blanks.token == token)
     blanks = blanks[0]
 
     blank_info = {
+        'id': blanks.id,
         'name': blanks.name,
         'token': token,
         'state': blanks.state
@@ -438,13 +440,13 @@ def add_new_users_answers(data, blank_id, user_id):
     check = []
 
     for row in rows:
-        check.append({"questiontype": row.questionType, "answer": row.answer,
-        "question": row.question, "registrationnumber": str(row.registrationNumber)})
+        check.append(row.question)
+
+    print("check", check)
 
     for curr_row in data:
         if len(check) > 0:
-            for check_row in check:
-                if curr_row["question"] != check_row["question"] and curr_row["questiontype"] == check_row["questiontype"]:
+                if curr_row["question"] not in check:
                     print("add", curr_row)
 
                     user_answers = UserAnswers(
@@ -461,8 +463,8 @@ def add_new_users_answers(data, blank_id, user_id):
                 else:
                     print("update", curr_row)
 
-                    s.query(UserAnswers).filter(UserAnswers.question == curr_row["question"] and \
-                        UserAnswers["questionType"] == curr_row["questiontype"]).update({"answer": curr_row["answer"]})
+                    s.query(UserAnswers).filter(and_(UserAnswers.question == curr_row["question"], UserAnswers.userId == user_id)).update({"answer": curr_row["answer"]})
+
         else:
             print("add", curr_row)
             
@@ -619,3 +621,21 @@ def get_user_state_by_user_id(user_id):
     state = user["state"]
 
     return state
+
+
+def get_users_work_experience_by_blank_id(blank_id):
+    user_answers = get_user_answers_by_blank_id(blank_id)
+
+    data = [[],[],[]]
+
+    work_experiences = [{"answer": int(user_answer["answer"]), "userId": user_answer["userId"]} for user_answer in user_answers if user_answer["registrationNumber"] == 0]
+
+    for work_experience in work_experiences:
+        exp = work_experience["answer"] - 1
+        userId = work_experience["userId"]
+
+        user_answers = get_user_answers_by_user_id(userId)
+
+        data[exp].append(user_answers)
+
+    return data
