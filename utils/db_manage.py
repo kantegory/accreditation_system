@@ -399,13 +399,12 @@ def get_all_blanks(state="all"):
 def add_new_user(data):
     s = session()
 
-    # last_id = len(s.query(Users).all()) + 1
-
     for user_data in data:
 
         user = Users(
             token=user_data['token'],
-            email=user_data['email']
+            email=user_data['email'],
+            state='unfinished'
         )
 
         s.add(user)
@@ -435,16 +434,48 @@ def add_new_users_answers(data, blank_id, user_id):
 
     s = session()
 
+    rows = s.query(UserAnswers).filter(UserAnswers.userId == user_id).all()
+    check = []
+
+    for row in rows:
+        check.append({"questiontype": row.questionType, "answer": row.answer,
+        "question": row.question, "registrationnumber": str(row.registrationNumber)})
+
     for curr_row in data:
-        user_answers = UserAnswers(
-            blankId=blank_id,
-            userId=user_id,
-            question=curr_row['question'],
-            questionType=curr_row['questiontype'],
-            answer=curr_row['answer'],
-            registrationNumber=curr_row['registrationnumber']
-        )
-        s.add(user_answers)
+        if len(check) > 0:
+            for check_row in check:
+                if curr_row["question"] != check_row["question"] and curr_row["questiontype"] == check_row["questiontype"]:
+                    print("add", curr_row)
+
+                    user_answers = UserAnswers(
+                        blankId=blank_id,
+                        userId=user_id,
+                        question=curr_row['question'],
+                        questionType=curr_row['questiontype'],
+                        answer=curr_row['answer'],
+                        registrationNumber=curr_row['registrationnumber']
+                    )
+
+                    s.add(user_answers)
+
+                else:
+                    print("update", curr_row)
+
+                    s.query(UserAnswers).filter(UserAnswers.question == curr_row["question"] and \
+                        UserAnswers["questionType"] == curr_row["questiontype"]).update({"answer": curr_row["answer"]})
+        else:
+            print("add", curr_row)
+            
+            user_answers = UserAnswers(
+                blankId=blank_id,
+                userId=user_id,
+                question=curr_row['question'],
+                questionType=curr_row['questiontype'],
+                answer=curr_row['answer'],
+                registrationNumber=curr_row['registrationnumber']
+            )
+
+            s.add(user_answers)
 
     s.commit()
 
@@ -570,3 +601,21 @@ def change_blank_state_by_token(state, token):
 
     s.query(Blanks).filter(Blanks.token == token).update({"state": state})
     s.commit()
+
+
+def change_user_state_by_user_id(state, user_id):
+
+    s = session()
+
+    s.query(Users).filter(Users.id == user_id).update({"state": state})
+    s.commit()
+
+
+def get_user_state_by_user_id(user_id):
+
+    s = session()
+
+    user = s.query(Users).filter(Users.id == user_id).first().__dict__
+    state = user["state"]
+
+    return state
