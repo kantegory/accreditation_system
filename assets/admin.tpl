@@ -52,6 +52,7 @@
                         <div class="d-flex flex-row mt-2" id="fileBtns">
                             <button class="btn btn-primary" onclick="editFileAmount('add')" id="addFile">Добавить ещё</button>
                         </div>
+                        <small class="text-muted">Сначала нажмите на кнопку "добавить", если используете более одного стандарта, а уже после загружайте файлы</small>
                     </div>
                     <div class="form-group">
                         <div class="d-flex flex-column">
@@ -209,7 +210,7 @@
     let fileAmounts = 1;
 
     function editFileAmount(action) {
-        event.preventDefault();
+        this.event.preventDefault();
         if (action === "add") {
             fileAmounts++;
             document.querySelector('#fileInputs').innerHTML += `
