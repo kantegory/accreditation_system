@@ -31,10 +31,12 @@
         <article class="container-fluid bg-light">
             <section class="p-3">
                 <div class="d-flex flex-row">
-                    <h2>Отчёт по анкете {{ blank['name'] }}</h2>
-                    <button class="btn btn-primary ml-auto">Скачать полный отчёт</button>
+                    <h2>Отчёт по анкете <span id="reportName">{{ blank['name'] }}</span></h2>
+                    <button class="btn btn-primary ml-auto" id="export">Скачать полный отчёт</button>
                 </div>
-                <h4>Процесс:</h4>
+                <h4 class="my-4">Итог анализа:</h4>
+                {{ analysis }}
+                <h4 class="my-4">Процесс:</h4>
                 <table class="table">
                     <thead>
                         <tr>
@@ -53,11 +55,61 @@
                         %end
                     </tbody>
                 </table>
-                <h4>Анализ:</h4>
-                {{ analysis }}
+                <table id="fullReport" class="d-none">
+                <thead>
+                    <tr>
+                        <th>Пользователь (ID в базе)</th>
+                        <th>Тип вопроса</th>
+                        <th>Вопрос</th>
+                        <th>Ответ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                %questionTypes = {"requiredSkill": "Навыки", "necessaryKnowlende": "Знания", "laborActions": "Действия", "job": 0}
+                %answers = ["Не было в программе образовательной организации, но востребовано на рабочем месте", "Частично освоил в образовательной организации, но не востребовано на рабочем месте", "Освоил в образовательной организации, но не востребовано на рабочем месте", "Частично освоил в образовательной организации и соответствует требованиям работодателя", "Освоил в образовательной организации и соответствует требованиям работодателя"]
+
+                %for report in reports:
+                    %questionType = questionTypes[report["questionType"]]
+                    %if questionType != 0:
+                        %answer = answers[int(report["answer"]) - 1]
+                        <tr>
+                            <td>{{ report["userId"] }}</td>
+                            <td>{{ questionType }}</td>
+                            <td>{{ report["question"] }}</td>
+                            <td>{{ answer }}</td>
+                        </tr>
+                    %end
+                %end
+                </tbody>
             </section>
         </article>
     </main>
 </body>
+<script type="text/javascript">
+    let tableToExcel = (function() {
+    let uri = 'data:application/vnd.ms-excel;base64,',
+        template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+        base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+        format = function(s, c) {
+            return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; })
+        },
+        downloadURI = function(uri, name) {
+            let link = document.createElement("a");
+            link.download = name;
+            link.href = uri;
+            link.click();
+        };
+
+    return function(table, name, fileName) {
+        console.log("table is", table);
+        if (!table.nodeType) table = document.getElementById(table);
+        let ctx = { worksheet: name || 'Worksheet', table: table.innerHTML };
+        let resUri = uri + base64(format(template, ctx));
+        downloadURI(resUri, fileName);
+    }
+})();
+let table_name = document.querySelector('#reportName').innerHTML;
+document.querySelector('#export').onclick = function() { tableToExcel('fullReport', table_name, table_name + '.xls') };
+</script>
 
 </html>
