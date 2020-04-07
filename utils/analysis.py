@@ -2,12 +2,22 @@ import pandas as pd
 from .db_manage import get_users_work_experience_by_blank_id
 
 
+def merge_arr(arr):
+
+    merged = []
+
+    for i in range(len(arr)):
+        for data in arr[i]:
+            merged.append(data)
+
+    return merged
+
+
 def arr2df(arr):
 
-    df = pd.DataFrame(arr[0])
+    df = pd.DataFrame(arr)
     df.answer = pd.to_numeric(df.answer)
     df = df.loc[df['questionType']=='requiredSkill']
-    print('arr2df', df)
 
     return df
 
@@ -16,7 +26,6 @@ def arr2df(arr):
 def describe_percentile(df):
 
     df = df.describe()
-    print('describe', df)
     df = df.drop(df.index[[0, 1, 2, 3, 7]])
 
     return df
@@ -71,14 +80,19 @@ def get_analysis_by_blank_id(blank_id):
     print(df_jobless, df_job02, df_job2)
 
     if len(df_job2) > 0 and len(df_job02) > 0 and len(df_jobless) > 0:
+
+        df_jobless = merge_arr(df_jobless)
+        print("for arina", df_jobless)
+        df_job02 = merge_arr(df_job02)
+        df_job2 = merge_arr(df_job2)
     
         df_jobless = arr2df(df_jobless)
         df_job02 = arr2df(df_job02)
         df_job2 = arr2df(df_job2)
         
         df1 = describe_percentile(df_jobless)
-        print('percentile', df1)
         df_jobless_anom = free_anomaly(df1, df_jobless)
+        print('anoms', df_jobless_anom)
         freq1 = freq(df1, df_jobless_anom)
 
         df2 = describe_percentile(df_job02)
