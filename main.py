@@ -11,6 +11,7 @@ import json
 from utils.config import *
 from utils.notify import send_email
 from utils.analysis import get_analysis_by_blank_id
+import pathlib
 
 
 def check(user, password):
@@ -33,7 +34,7 @@ def get_admin_page():
         for token in tokens
     ]
 
-    return template('assets/admin.tpl', blanks=blanks, moderatingBlanks=moderating_blanks, standards=standards)
+    return template('{}/assets/admin.tpl'.format(_path), blanks=blanks, moderatingBlanks=moderating_blanks, standards=standards)
 
 
 @route('/admin/new_blank', method="POST")
@@ -60,7 +61,7 @@ def get_admin_blank_page(token):
     hostname = CONFIG["HOSTNAME"]
     port = CONFIG["PORT"]
     
-    return template('assets/blank.tpl', questions=questions, blank=blank, token=token, standards=standards, hostname=hostname, port=port)
+    return template('{}/assets/blank.tpl'.format(_path), questions=questions, blank=blank, token=token, standards=standards, hostname=hostname, port=port)
 
 
 @route('/admin/save_blank/<token>', method="POST")
@@ -104,7 +105,7 @@ def get_admin_report_page(token):
 
     analysis = get_analysis_by_blank_id(blank_id)
 
-    return template('assets/report.tpl', reports=reports, blank=blank, users=users, user_stat=user_stat, analysis=analysis)
+    return template('{}/assets/report.tpl'.format(_path), reports=reports, blank=blank, users=users, user_stat=user_stat, analysis=analysis)
 
 
 @route('/quiz/<token>/<user_id>')
@@ -114,7 +115,7 @@ def get_quiz_page(token, user_id):
 
     state = get_user_state_by_user_id(user_id)
 
-    return template('assets/quiz.tpl', questions=questions, token=token, user_id=user_id, blank=blank_info, state=state)
+    return template('{}/assets/quiz.tpl'.format(_path), questions=questions, token=token, user_id=user_id, blank=blank_info, state=state)
 
 
 @route('/quiz/<token>/<user_id>', method='POST')
@@ -142,4 +143,5 @@ def main(_host="localhost"):
 
 
 if __name__ == "__main__":
+    _path = pathlib.Path().absolute()
     main(CONFIG["HOSTNAME"])

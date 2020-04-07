@@ -7,6 +7,8 @@ Conflicts=getty@tty1.service
 Type=simple
 ExecStart=/usr/bin/python3 /usr/bin/accreditation_system/main.py
 StandardInput=tty-force
+WorkingDirectory=/usr/bin/accreditation_system
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
