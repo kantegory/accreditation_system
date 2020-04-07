@@ -13,12 +13,11 @@ def merge_arr(arr):
     return merged
 
 
-def arr2df(arr):
+def arr2df(arr): # переводит массив в датафрэйм
 
     df = pd.DataFrame(arr)
     df.answer = pd.to_numeric(df.answer)
     df = df.loc[df['questionType'] != 'job']
-    
     return df
 
 
