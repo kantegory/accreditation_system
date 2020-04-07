@@ -17,17 +17,18 @@ def arr2df(arr):
 
     df = pd.DataFrame(arr)
     df.answer = pd.to_numeric(df.answer)
-    df = df.loc[df['questionType']=='requiredSkill']
-
+    df = df.loc[df['questionType'] != 'job']
+    
     return df
 
 
 #считает 0,25; 0,5; 0,75 перцентили
 def describe_percentile(df):
 
-    df = df.describe()
+    df = df.groupby(['question']).describe()
+    df = df.answer
+    df = df.T
     df = df.drop(df.index[[0, 1, 2, 3, 7]])
-
     return df
 
 
