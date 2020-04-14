@@ -96,7 +96,9 @@
     </div>
     <script type="text/javascript">
     function writeAnswer(id) {
+	console.log("i write this question id", id);
         let currID = parseInt(id.split('_')[1]);
+	console.log("this is currID", currID);
         let fieldsetID = 'question' + currID;
 
         document.querySelector('#' + fieldsetID).dataset.answer = document.querySelector('#' + id).value;
@@ -106,6 +108,7 @@
 
     function saveResults(id) {
         let dataset = [JSON.stringify(document.querySelector('#question' + id).dataset)];
+	let answer = JSON.parse(dataset[0]).answer;
 
         console.log("dataset", dataset);
 
@@ -125,7 +128,8 @@
         }).then((result) => { console.log(result) })
 
         let questionID = '#question' + id;
-        let answerID = '#questions' + dataset.answer + '_' + id;
+	console.log('this is answer', answer);
+        let answerID = '#questions' + answer + '_' + id;
 
         localStorage.setItem(questionID, answerID);
     };
