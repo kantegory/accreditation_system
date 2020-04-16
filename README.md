@@ -1,5 +1,5 @@
 # accreditation_system
-ITMO Practice 2020
+ITMO Practice 2020 & congress of young scientists project
 
 1. Clone/download project
 ```bash
