@@ -7,10 +7,17 @@ def get_content_by_tag(page, tag):
     return result
 
 
-def get_text_by_tag(page, tag):
+def get_text_by_tag(page, tag, checker=None):
     result = page.findAll(tag)
-    result = [res.get_text().encode('utf-8', 'ignore') for res in result] \
-        if len(result) > 1 else result[0].get_text().encode('utf-8', 'ignore')
+    if checker:
+        checker = checker.decode('utf-8', 'ignore')
+        checker = checker[1:-3]
+
+        result = [res.get_text().encode('utf-8', 'ignore') for res in result if checker not in res.get_text()] \
+            if len(result) > 1 else result[0].get_text().encode('utf-8', 'ignore')
+    else:
+        result = [res.get_text().encode('utf-8', 'ignore') for res in result] \
+            if len(result) > 1 else result[0].get_text().encode('utf-8', 'ignore')
     return result
 
 
@@ -41,10 +48,9 @@ def get_particular_work_function(page):
         {
             'codeTF': get_text_by_tag(content[i], 'codetf'),
             'nameTF': get_text_by_tag(content[i], 'nametf'),
-            'laborActions': get_text_by_tag(content[i], 'laboraction'),
-            'requiredSkills': get_text_by_tag(content[i], 'requiredskill'),
-            'necessaryKnowledges': get_text_by_tag(content[i], 'necessaryknowledge'),
-            # 'otherCharacteristics': get_text_by_tag(content[i], 'othercharacteristic')
+            'laborActions': get_text_by_tag(content[i], 'laboraction', get_text_by_tag(content[i], 'codetf')),
+            'requiredSkills': get_text_by_tag(content[i], 'requiredskill', get_text_by_tag(content[i], 'codetf')),
+            'necessaryKnowledges': get_text_by_tag(content[i], 'necessaryknowledge', get_text_by_tag(content[i], 'codetf'))
         }
         for i in range(len(content))
     ]

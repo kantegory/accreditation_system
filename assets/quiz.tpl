@@ -23,13 +23,16 @@
     <main class="d-flex flex-row p-3 bg-light">
         <section class="container-fluid">
             <div class="d-flex flex-row">
-                <h2>{{ blank['name'] }}</h2>
-                <span class="ml-auto text-secondary">Все вопросы сохраняются автоматически</span>
+                <h1>{{ blank['name'] }}</h1>
+                <div class="d-flex flex-column ml-auto text-secondary text-right">
+		  <span>Количество вопросов: {{ len(questions) + 1 }}</span>
+		  <span>Все вопросы сохраняются автоматически</span>
+		</div>
             </div>
             %if state == "unfinished":
             <form class="w-50 m-auto">
                 <fieldset class="w-100 mt-2" id="question0" data-questionType="job" data-answer="" data-question="Стаж вашей работы по специальности" data-registrationNumber="0" data-codeOTF="0">
-                    <legend>Стаж вашей работы по специальности</legend>
+                    <legend>1. Стаж вашей работы по специальности</legend>
                     <div class="custom-control custom-radio">
                         <input type="radio" id="questions3_0" name="question0" class="custom-control-input" value="3" onclick="writeAnswer(this.id)" required="">
                         <label class="custom-control-label" for="questions3_0">Не работал по специальности</label>
@@ -43,10 +46,19 @@
                         <label class="custom-control-label" for="questions1_0">Более 2 лет</label>
                     </div>
                 </fieldset>
+                %prev_question_type = "job"
                 %for i in range(len(questions)):
+		%if questions[i]['questionType'] != prev_question_type:
+		%prev_question_type = questions[i]['questionType']
+		%question_types = {"requiredSkill": "Навыки", "necessaryKnowledge": "Знания", "laborAction": "Трудовые действия"}
+		<div class="d-flex flex-column my-2 lead">
+                  <span><strong>Профессиональный стандарт:</strong> {{ questions[i]['standardRegistrationNumber'] }}</span>
+		  <span><strong>Трудовая функция:</strong> {{ questions[i]['codeTF'] }}</span>
+		  <span><strong>Тип вопроса:</strong> {{ question_types[questions[i]['questionType']] }}</span>
+		</div>
+		%end
                 <fieldset class="w-100 mt-2 question" id="question{{ i + 1 }}" data-questionType="{{ questions[i]['questionType'] }}" data-registrationNumber="{{ questions[i]['standardRegistrationNumber'] }}" data-answer="" data-codeOTF="{{ questions[i]['codeTF'] }}" data-question="{{ questions[i]['question'] }}">
-                    <legend>Выберите наиболее подходящее утверждение для следующей компетенции:</legend>
-                    <p>{{ questions[i]['question'] }}</p>
+                    <legend>{{ i + 2 }}. {{ questions[i]['question'] }}</legend>
                     <div class="custom-control custom-radio">
                         <input type="radio" id="questions5_{{ i + 1 }}" name="question{{ i + 1 }}" class="custom-control-input" value="5" onclick="writeAnswer(this.id)" required="">
                         <label class="custom-control-label" for="questions5_{{ i + 1 }}">Освоил в образовательной организации и соответствует требованиям работодателя</label>

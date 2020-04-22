@@ -68,7 +68,7 @@
                             %elif questions[i]['questionType'] == 'necessaryKnowledge':
                                 %questionType = 'Знания'
                             %elif questions[i]['questionType'] == 'laborAction':
-                                %questionType = 'Умения'
+                                %questionType = 'Трудовые действия'
                             %end
                             <label for="" class="font-weight-bold">{{ questions[i]['question'] }}</label>
                             <p>Тип вопроса: {{ questionType }}</p>

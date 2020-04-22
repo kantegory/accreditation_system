@@ -44,7 +44,6 @@ def add_new_blank(data):
 
 
 def add_new_gwf(data, token):
-    print('this is data', data)
 
     otf = [
         {
